@@ -1,0 +1,30 @@
+class Dimens {
+  static const double dm2 = 2.0;
+  static const double dm3 = 3.0;
+  static const double dm4 = 4.0;
+  static const double dm6 = 6.0;
+  static const double dm8 = 8.0;
+  static const double dm10 = 10.0;
+  static const double dm12 = 12.0;
+  static const double dm14 = 14.0;
+  static const double dm16 = 16.0;
+  static const double dm18 = 18.0;
+  static const double dm20 = 20.0;
+  static const double dm22 = 22.0;
+  static const double dm23 = 23.0;
+  static const double dm24 = 24.0;
+  static const double dm25 = 25.0;
+  static const double dm28 = 28.0;
+  static const double dm30 = 30.0;
+  static const double dm40 = 40.0;
+  static const double dm50 = 50.0;
+  static const double dm60 = 60.0;
+  static const double dm70 = 70.0;
+  static const double dm80 = 80.0;
+  static const double dm90 = 90.0;
+  static const double dm100 = 100.0;
+  static const double dm120 = 120.0;
+  static const double dm150 = 150.0;
+  static const double dm200 = 200.0;
+  static const double dm300 = 300.0;
+}
