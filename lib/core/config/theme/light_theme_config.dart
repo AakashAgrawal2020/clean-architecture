@@ -19,10 +19,10 @@ final lightTheme = ThemeData(
     .copyWith(
   extensions: <ThemeExtension<dynamic>>[
     CustomTextStyles(
-        headline3: TextStyles.textStyle1!,
-        headline4: TextStyles.textStyle1!,
-        headline5: TextStyles.textStyle1!,
-        headline6: TextStyles.textStyle1!),
+        custom1: TextStyles.textStyle1!,
+        custom2: TextStyles.textStyle2!,
+        custom3: TextStyles.textStyle3!,
+        custom4: TextStyles.textStyle4!),
     const CustomColors(
         primaryColor: Colours.green,
         secondaryColor: Colours.magenta,

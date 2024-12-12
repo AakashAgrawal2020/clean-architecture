@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 class SplashServices {
   SplashServices._internal();
 
-  static final SplashServices instance = SplashServices._internal();
+  static final SplashServices singleton = SplashServices._internal();
 
   factory SplashServices() {
-    return instance;
+    return singleton;
   }
 
   Future<void> isLogin(BuildContext context) async {

@@ -21,3 +21,13 @@ class FlavorConfig {
     return _instance!;
   }
 }
+
+void main() {
+  FlavorConfig d = FlavorConfig(apiUrl: 'djhj');
+  print(d.apiUrl);
+
+  FlavorConfig f = FlavorConfig(apiUrl: 'daaaa');
+  FlavorConfig._instance!.apiUrl;
+  print(f.apiUrl);
+  print(d == f);
+}

@@ -1,3 +1,4 @@
+import 'package:clean_architecture/core/config/theme/light_theme_config.dart';
 import 'package:clean_architecture/core/service_locator/service_locator.dart';
 import 'package:clean_architecture/presentation/routes/route_generator.dart';
 import 'package:clean_architecture/presentation/routes/routes.dart';
@@ -19,10 +20,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true),
-      initialRoute: Routes.splashScreen,
+      theme: lightTheme,
+      initialRoute: Routes.animationScreen,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
