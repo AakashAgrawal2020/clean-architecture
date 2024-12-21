@@ -2,6 +2,7 @@ import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
+import 'package:clean_architecture/core/utils/location_permission_handler.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class ProductListingScreen extends StatefulWidget {
 }
 
 class _ProductListingScreenState extends State<ProductListingScreen>
-    with StyleExtension {
+    with StyleExtension, WidgetsBindingObserver {
   late List<String> _images;
   late List<String> _title;
   late List<String> _description;
@@ -22,6 +23,8 @@ class _ProductListingScreenState extends State<ProductListingScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _fetchLocation();
     _isVisible = [];
     _images = [
       'https://dummyimage.com/600x400/000/fff',
@@ -56,6 +59,21 @@ class _ProductListingScreenState extends State<ProductListingScreen>
     _initializeAnimation();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _fetchLocation();
+    }
+  }
+
+  Future<void> _fetchLocation() async {
+    final value = await requestLocationPermission();
+    setState(() {
+      currentLocation = value;
+    });
+  }
+
   void _initializeAnimation() {
     for (int i = 0; i < _images.length; i++) {
       _isVisible.add(false);
@@ -65,6 +83,12 @@ class _ProductListingScreenState extends State<ProductListingScreen>
         });
       });
     }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -85,6 +109,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                     itemBuilder: (context, index) {
                       return ProductCard(
                         image: _images[index],
+                        currentLocation: currentLocation,
                         title: _title[index],
                         description: _description[index],
                         isVisible: _isVisible[index],

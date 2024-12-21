@@ -3,17 +3,18 @@ import 'package:clean_architecture/core/components/primary_button.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
-import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/location_permission_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
-class ProductCard extends StatefulWidget with StyleExtension {
+class ProductCard extends StatefulWidget {
   final String image;
   final String title;
   final String description;
   final double latitude;
   final double longitude;
+  final Position? currentLocation;
   final bool isVisible;
 
   const ProductCard(
@@ -23,7 +24,8 @@ class ProductCard extends StatefulWidget with StyleExtension {
       required this.description,
       required this.isVisible,
       required this.latitude,
-      required this.longitude});
+      required this.longitude,
+      this.currentLocation});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -33,6 +35,11 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -92,15 +99,24 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
               children: [
                 Row(children: [
                   const Padding(
-                      padding: EdgeInsets.only(left: Dimens.dm16),
+                      padding:
+                          EdgeInsets.only(left: Dimens.dm16, right: Dimens.dm6),
                       child: Icon(Icons.social_distance_rounded,
                           color: Colours.purple)),
-                  Dimens.dm8.horizontalSpace,
-                  Text(
-                      currentLocation != null
-                          ? '${distanceInKms(currentLocation!.latitude, currentLocation!.longitude, widget.latitude, widget.longitude)} Kms'
-                          : 'NA',
-                      style: textStyles(context).asgardTextStyle2)
+                  const Icon(Icons.arrow_right_alt_outlined,
+                      color: Colours.purple),
+                  currentLocation != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: Dimens.dm4),
+                          child: Text(
+                              '${distanceInKms(currentLocation!.latitude, currentLocation!.longitude, widget.latitude, widget.longitude)} Kms',
+                              style: textStyles(context).asgardTextStyle2),
+                        )
+                      : IconButton(
+                          onPressed: () async {
+                            requestLocationPermission(openSettings: true);
+                          },
+                          icon: const Icon(Icons.map_outlined))
                 ]),
                 Padding(
                   padding: const EdgeInsets.all(Dimens.dm16),
