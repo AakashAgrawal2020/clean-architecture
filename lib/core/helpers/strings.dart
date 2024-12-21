@@ -1,5 +1,5 @@
 class Strings {
-  static String splashScreen = 'Splash Screen';
+  static String appName = 'asgard.world';
   static String loginScreen = 'Login Screen';
   static String homeScreen = 'Home Screen';
 

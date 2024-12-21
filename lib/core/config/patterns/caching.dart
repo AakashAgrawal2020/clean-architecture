@@ -20,7 +20,7 @@ class NamedControlledObject {
   }
 
   void log(String message) {
-    print('$name: $message');
+    // debugPrint('$name: $message');g
   }
 }
 
