@@ -23,7 +23,6 @@ class FlavorConfig {
 }
 
 void main() {
-
   // FlavorConfig d = FlavorConfig(apiUrl: 'djhj');
   //
   // FlavorConfig f = FlavorConfig(apiUrl: 'daaaa');
