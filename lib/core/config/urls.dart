@@ -1,3 +1,3 @@
 class Urls {
-  static String baseUrl = 'https://reqres.in/';
+  static String baseUrl = 'https://mocki.io/';
 }

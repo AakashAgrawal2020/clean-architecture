@@ -13,6 +13,8 @@ class Strings {
   static String loginSuccessful = 'Login successful!';
   static String loginFailed = 'Login failed!';
 
+  static String productListingScreenHeading = 'Asgard Product List';
+
   static String loginBtn = 'Login';
 
   static String appBar = 'App Bar';

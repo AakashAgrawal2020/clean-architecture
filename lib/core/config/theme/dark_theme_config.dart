@@ -11,6 +11,11 @@ final darkTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
           fontSize: Fonts.fs24,
           fontWeight: Fonts.fw600,
           color: Colours.white,
+          fontStyle: Fonts.normal),
+      asgardTextStyle2: TextStyle(
+          fontSize: Fonts.fs20,
+          fontWeight: Fonts.fw500,
+          color: Colours.white,
           fontStyle: Fonts.normal)),
-  const AsgardColours(backgroundColor: Colours.black)
+  const AsgardColours(backgroundColor: Colours.black, tileColor: Colours.grey1)
 ]);

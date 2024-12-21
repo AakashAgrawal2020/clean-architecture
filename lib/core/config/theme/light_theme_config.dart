@@ -11,6 +11,11 @@ final lightTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
           fontSize: Fonts.fs24,
           fontWeight: Fonts.fw600,
           color: Colours.black,
+          fontStyle: Fonts.normal),
+      asgardTextStyle2: TextStyle(
+          fontSize: Fonts.fs20,
+          fontWeight: Fonts.fw500,
+          color: Colours.black,
           fontStyle: Fonts.normal)),
-  const AsgardColours(backgroundColor: Colours.white)
+  const AsgardColours(backgroundColor: Colours.white, tileColor: Colours.grey2)
 ]);
