@@ -5,7 +5,7 @@ class Colours {
   static const Color black = Color(0xFF000000);
   static const Color green = Color(0xFF485936);
 
-  static const Color purple = Color(0xFF713D53);
+  static const Color purple = Color(0xFF750C94);
   static const Color red = Color(0xFFD31111);
 
   static const Color grey1 = Color(0xFF2C302B);

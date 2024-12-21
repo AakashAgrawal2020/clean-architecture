@@ -1,4 +1,5 @@
 class Dimens {
+  static const double dm0 = 0;
   static const double dm1 = 1;
   static const double dm2 = 2;
   static const double dm3 = 3;

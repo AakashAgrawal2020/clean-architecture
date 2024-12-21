@@ -14,52 +14,90 @@ class ProductListingScreen extends StatefulWidget {
 
 class _ProductListingScreenState extends State<ProductListingScreen>
     with StyleExtension {
-  late List<String> images;
-  late List<String> title;
-  late List<String> description;
+  late List<String> _images;
+  late List<String> _title;
+  late List<String> _description;
+  late List<bool> _isVisible;
 
   @override
   void initState() {
     super.initState();
-    images = [
+    _isVisible = [];
+    _images = [
+      'https://dummyimage.com/600x400/000/fff',
+      'https://placekitten.com/400/300',
+      'https://dummyimage.com/600x400/000/fff',
+      'https://loremflickr.com/320/240',
       'https://dummyimage.com/600x400/000/fff',
       'https://placekitten.com/400/300',
       'https://dummyimage.com/600x400/000/fff',
       'https://loremflickr.com/320/240'
     ];
-    title = [
+    _title = [
       'Sample title 1',
       'Sample title 2',
       'Sample title 3',
       'Sample title 4',
+      'Sample title 5',
+      'Sample title 6',
+      'Sample title 7',
+      'Sample title 8',
     ];
-    description = [
+    _description = [
       'Sample body content for item 1',
       'Sample body content for item 2',
       'Sample body content for item 3',
       'Sample body content for item 4',
+      'Sample body content for item 5',
+      'Sample body content for item 6',
+      'Sample body content for item 7',
+      'Sample body content for item 8',
     ];
+    _initializeAnimation();
+  }
+
+  void _initializeAnimation() {
+    for (int i = 0; i < _images.length; i++) {
+      _isVisible.add(false);
+      Future.delayed(Duration(milliseconds: i * 200), () {
+        setState(() {
+          _isVisible[i] = true;
+        });
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colours(context).backgroundColor,
-        appBar: AppBar(
-            backgroundColor: colours(context).backgroundColor,
-            title: Text(Strings.productListingScreenHeading,
-                style: textStyles(context).asgardTextStyle2)),
-        body: ListView.separated(
-          itemCount: images.length,
-          itemBuilder: (context, index) {
-            return ProductCard(
-                image: images[index],
-                title: title[index],
-                description: description[index]);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return Dimens.dm20.verticalSpace;
-          },
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Dimens.dm10),
+                  child: Text(Strings.productListingScreenHeading,
+                      style: textStyles(context).asgardTextStyle2)),
+              Expanded(
+                child: ListView.separated(
+                    itemCount: _images.length,
+                    itemBuilder: (context, index) {
+                      return ProductCard(
+                        image: _images[index],
+                        title: _title[index],
+                        description: _description[index],
+                        isVisible: _isVisible[index],
+                        latitude: 28.447720,
+                        longitude: 77.524567,
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Dimens.dm20.verticalSpace;
+                    }),
+              ),
+            ],
+          ),
         ));
   }
 }

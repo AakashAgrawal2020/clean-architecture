@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> with StyleExtension {
   @override
   void initState() {
     super.initState();
-    SplashServices().redirectToLocationListing(context);
+    SplashServices().redirectToProductListing(context);
   }
 
   @override

@@ -1,20 +1,15 @@
 import 'dart:async';
 
+import 'package:clean_architecture/core/utils/location_permission_handler.dart';
 import 'package:clean_architecture/presentation/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 
 class SplashServices {
-  SplashServices._internal();
-
-  static final SplashServices singleton = SplashServices._internal();
-
-  factory SplashServices() {
-    return singleton;
-  }
-
-  void redirectToLocationListing(BuildContext context) {
-    Timer(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacementNamed(Routes.productListingScreen);
+  Future<void> redirectToProductListing(BuildContext context) async {
+    await requestLocationPermission().then((value) {
+      Timer(const Duration(seconds: 1), () {
+        Navigator.of(context).pushReplacementNamed(Routes.productListingScreen);
+      });
     });
   }
 
