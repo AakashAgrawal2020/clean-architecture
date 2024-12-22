@@ -1,14 +1,13 @@
 import 'package:clean_architecture/core/components/error.dart';
 import 'package:clean_architecture/core/components/no_internet.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
-import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
+import 'package:clean_architecture/core/utils/animations.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/location_permission_handler.dart';
-import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/bloc/products_bloc.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/widgets/page_loading.dart';
@@ -25,15 +24,15 @@ class ProductListingScreen extends StatefulWidget {
 }
 
 class _ProductListingScreenState extends State<ProductListingScreen>
-    with StyleExtension, WidgetsBindingObserver {
-  late List<bool> _isVisible;
+    with StyleExtension, WidgetsBindingObserver, TickerProviderStateMixin {
+  late List<AnimationController> _animationControllers;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _animationControllers = [];
     _fetchLocation();
-    _isVisible = [];
   }
 
   @override
@@ -51,20 +50,12 @@ class _ProductListingScreenState extends State<ProductListingScreen>
     });
   }
 
-  void _initializeAnimation(List<ProductModel> products) {
-    for (int i = 0; i < products.length; i++) {
-      _isVisible.add(false);
-      Future.delayed(Duration(milliseconds: i * 80), () {
-        setState(() {
-          _isVisible[i] = true;
-        });
-      });
-    }
-  }
-
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    for (var controller in _animationControllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -89,16 +80,37 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                   context.read<ProductsBloc>().add((FetchProductsEvent()));
                 });
               } else if (state.status == ApiStatus.loading) {
-                _isVisible = [];
-                return Loading(
-                    lottiePath: Lotties.loadingProducts,
-                    message: Strings.productsLoadingMessage,
-                    lottieHeight: context.contextWidth / 2);
+                _animationControllers = [];
+                _animationControllers =
+                    AnimationUtils.createStaggeredControllers(
+                        vsync: this,
+                        itemCount: 1,
+                        itemDuration: 500,
+                        delayDuration: 150);
+
+                return AnimatedBuilder(
+                  animation: _animationControllers[0],
+                  builder: (context, child) {
+                    return FadeTransition(
+                      opacity: _animationControllers[0]
+                          .drive(CurveTween(curve: Curves.easeIn)),
+                      child: Loading(
+                          lottiePath: Lotties.loadingProducts,
+                          message: Strings.productsLoadingMessage,
+                          lottieHeight: context.contextWidth / 2),
+                    );
+                  },
+                );
               } else if (state.status == ApiStatus.completed) {
                 if (state.products.isNotEmpty) {
-                  if (_isVisible.isEmpty) {
-                    _initializeAnimation(state.products);
-                  }
+                  _animationControllers = [];
+                  _animationControllers =
+                      AnimationUtils.createStaggeredControllers(
+                          vsync: this,
+                          itemCount: state.products.length,
+                          itemDuration: 500,
+                          delayDuration: 150);
+
                   return RefreshIndicator(
                       backgroundColor: colours(context).backgroundColor,
                       color: Colours.purple,
@@ -107,21 +119,31 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                             .read<ProductsBloc>()
                             .add((FetchProductsEvent()));
                       },
-                      child: ListView.separated(
+                      child: ListView.builder(
                           itemCount: state.products.length,
                           itemBuilder: (context, index) {
-                            return ProductCard(
-                                image: state.products[index].imageUrl,
-                                currentLocation: currentLocation,
-                                title: state.products[index].title,
-                                description: state.products[index].body,
-                                isVisible: _isVisible[index],
-                                latitude: state.products[index].coordinates[0],
-                                longitude:
-                                    state.products[index].coordinates[1]);
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return Dimens.dm20.verticalSpace;
+                            return AnimatedBuilder(
+                                animation: _animationControllers[index],
+                                builder: (context, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                            begin: const Offset(-1.0, 0.2),
+                                            end: Offset.zero)
+                                        .animate(CurvedAnimation(
+                                            parent:
+                                                _animationControllers[index],
+                                            curve: Curves.decelerate)),
+                                    child: ProductCard(
+                                        image: state.products[index].imageUrl,
+                                        currentLocation: currentLocation,
+                                        title: state.products[index].title,
+                                        description: state.products[index].body,
+                                        latitude: state
+                                            .products[index].coordinates[0],
+                                        longitude: state
+                                            .products[index].coordinates[1]),
+                                  );
+                                });
                           }));
                 } else {
                   return const ZeroProducts();

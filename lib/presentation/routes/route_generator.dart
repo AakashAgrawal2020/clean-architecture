@@ -1,6 +1,5 @@
 
 import 'package:clean_architecture/presentation/routes/routes.dart';
-import 'package:clean_architecture/presentation/screens/product_listing/product_listing_screen.dart';
 import 'package:clean_architecture/presentation/screens/views.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +10,6 @@ class RouteGenerator {
         return PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
                 const SplashScreen());
-
-      // case Routes.loginScreen:
-      //   return PageRouteBuilder(
-      //       pageBuilder: (context, animation, secondaryAnimation) =>
-      //           const LoginScreen());
 
       case Routes.productListingScreen:
         return PageRouteBuilder(

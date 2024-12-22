@@ -15,14 +15,12 @@ class ProductCard extends StatefulWidget {
   final double latitude;
   final double longitude;
   final Position? currentLocation;
-  final bool isVisible;
 
   const ProductCard(
       {super.key,
       required this.image,
       required this.title,
       required this.description,
-      required this.isVisible,
       required this.latitude,
       required this.longitude,
       this.currentLocation});
@@ -45,14 +43,9 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.ease,
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
-        transform: widget.isVisible
-            ? Matrix4.identity()
-            : Matrix4.translationValues(-400, 100, 100),
         decoration: BoxDecoration(
             color: colours(context).backgroundColor,
             borderRadius: BorderRadius.circular(Dimens.dm10),
