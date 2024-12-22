@@ -1,4 +1,3 @@
-import 'package:clean_architecture/core/components/page_loading_placeholder.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
@@ -8,7 +7,9 @@ import 'package:clean_architecture/core/utils/location_permission_handler.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/bloc/products_bloc.dart';
+import 'package:clean_architecture/presentation/screens/product_listing/widgets/page_loading.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/widgets/product_card.dart';
+import 'package:clean_architecture/presentation/screens/product_listing/widgets/zero_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -80,28 +81,35 @@ class _ProductListingScreenState extends State<ProductListingScreen>
           child: BlocBuilder<ProductsBloc, ProductsState>(
             builder: (context, state) {
               if (state.status == ApiStatus.loading) {
-                return PageLoadingPlaceHolder(
+                return PageLoading(
                     message: Strings.productsLoadingMessage,
                     lottieHeight: context.contextWidth / 2);
               } else if (state.status == ApiStatus.error) {
                 return const Center(child: Text('Error...'));
               } else if (state.status == ApiStatus.completed) {
-                _initializeAnimation(state.products);
-                return ListView.separated(
-                    itemCount: state.products.length,
-                    itemBuilder: (context, index) {
-                      return ProductCard(
-                          image: state.products[index].imageUrl,
-                          currentLocation: currentLocation,
-                          title: state.products[index].title,
-                          description: state.products[index].body,
-                          isVisible: _isVisible[index],
-                          latitude: state.products[index].coordinates[0],
-                          longitude: state.products[index].coordinates[1]);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Dimens.dm20.verticalSpace;
-                    });
+                if (state.products.isNotEmpty) {
+                  _initializeAnimation(state.products);
+                  return ListView.separated(
+                      itemCount: state.products.length,
+                      itemBuilder: (context, index) {
+                        return ProductCard(
+                            image: state.products[index].imageUrl,
+                            currentLocation: currentLocation,
+                            title: state.products[index].title,
+                            description: state.products[index].body,
+                            isVisible: _isVisible[index],
+                            latitude: state.products[index].coordinates[0],
+                            longitude: state.products[index].coordinates[1]);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Dimens.dm20.verticalSpace;
+                      });
+                } else {
+                  return ZeroProducts(
+                    message: Strings.zeroProductsMessage,
+                    lottieWidth: context.contextWidth / 2,
+                  );
+                }
               } else {
                 return const Center(child: Text('Something went wrong...'));
               }

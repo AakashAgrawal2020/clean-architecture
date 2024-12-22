@@ -2,18 +2,19 @@ import 'package:clean_architecture/core/components/primary_button.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
+import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class NoInternet extends StatefulWidget {
+class SomethingWentWrong extends StatefulWidget {
   final String? message;
   final double? lottieHeight;
   final double? lottieWidth;
   final VoidCallback onTap;
 
-  const NoInternet(
+  const SomethingWentWrong(
       {super.key,
       required this.onTap,
       this.message,
@@ -21,10 +22,11 @@ class NoInternet extends StatefulWidget {
       this.lottieWidth});
 
   @override
-  State<NoInternet> createState() => _NoInternetState();
+  State<SomethingWentWrong> createState() => _SomethingWentWrongState();
 }
 
-class _NoInternetState extends State<NoInternet> with StyleExtension {
+class _SomethingWentWrongState extends State<SomethingWentWrong>
+    with StyleExtension {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,7 +44,10 @@ class _NoInternetState extends State<NoInternet> with StyleExtension {
                     textAlign: TextAlign.center,
                     style: textStyles(context).asgardTextStyle2))
             : Dimens.dm100.verticalSpace,
-        PrimaryButton(onTap: widget.onTap, text: Strings.openNetworkSettings)
+        PrimaryButton(
+            onTap: widget.onTap,
+            status: ApiStatus.initial,
+            text: Strings.tryAgain)
       ],
     );
   }

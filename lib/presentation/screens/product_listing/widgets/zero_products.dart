@@ -5,12 +5,12 @@ import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class PageLoadingPlaceHolder extends StatelessWidget with StyleExtension {
+class ZeroProducts extends StatelessWidget with StyleExtension {
   final String? message;
   final double? lottieHeight;
   final double? lottieWidth;
 
-  const PageLoadingPlaceHolder(
+  const ZeroProducts(
       {super.key, required this.message, this.lottieHeight, this.lottieWidth});
 
   @override
@@ -18,9 +18,12 @@ class PageLoadingPlaceHolder extends StatelessWidget with StyleExtension {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-            child: Lottie.asset(Lotties.loading,
-                width: lottieWidth, height: lottieHeight)),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(Dimens.dm50),
+          child: Lottie.asset(Lotties.zeroProducts,
+              width: lottieWidth, height: lottieHeight),
+        ),
+        Dimens.dm40.verticalSpace,
         message != null
             ? Padding(
                 padding: const EdgeInsets.only(

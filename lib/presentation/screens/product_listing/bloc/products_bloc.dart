@@ -5,14 +5,12 @@ import 'package:clean_architecture/domain/repositories/product/product_repositor
 import 'package:equatable/equatable.dart';
 
 part 'products_event.dart';
-
 part 'products_state.dart';
 
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductRepository productRepository;
 
-  ProductsBloc({required this.productRepository})
-      : super(const ProductsState()) {
+  ProductsBloc({required this.productRepository}) : super(ProductsState()) {
     on<FetchProductsEvent>(_onFetchProductsEvent);
   }
 

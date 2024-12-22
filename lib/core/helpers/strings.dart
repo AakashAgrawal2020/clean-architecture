@@ -19,7 +19,11 @@ class Strings {
 
   static String productsLoadingMessage =
       'Hold on tight! The most epic products are just moments away!';
+  static String zeroProductsMessage =
+      'We’re fresh out of products right now—stay tuned for the latest arrivals!';
+
   static String tryAgain = 'Try again';
+  static String openNetworkSettings = 'Open Network Settings';
 
   static String notInternetMessage =
       'Please check your internet connection\nand try again';

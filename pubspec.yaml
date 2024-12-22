@@ -40,3 +40,6 @@ flutter:
   assets:
     - assets/asgard_logo.png
     - assets/loading.json
+    - assets/no_internet.json
+    - assets/zero_products.json
+    - assets/something_went_wrong.json
