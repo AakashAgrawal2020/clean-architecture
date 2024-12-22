@@ -17,9 +17,8 @@ class Strings {
 
   static String loginBtn = 'Login';
 
-  static String appBar = 'App Bar';
-
-  static String sampleButton = 'Sample Button';
+  static String productsLoadingMessage =
+      'Hold on tight! The most epic products are just moments away!';
   static String tryAgain = 'Try again';
 
   static String notInternetMessage =

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:clean_architecture/core/config/urls.dart';
 import 'package:clean_architecture/core/network/network_services.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
@@ -11,9 +9,14 @@ class ProductRepositoryImpl extends ProductRepository {
   ProductRepositoryImpl({required this.networkServices});
 
   @override
-  Future<List<ProductModel>> fetchProducts(dynamic data) async {
+  Future<List<ProductModel>> fetchProducts() async {
     dynamic response = await networkServices.getAPI(Urls.productListRemotePath);
-    final List<dynamic> parsedJson = json.decode(response);
-    return parsedJson.map((item) => ProductModel.fromJson(item)).toList();
+    if (response is List) {
+      return response
+          .map((item) => ProductModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw Exception('Unexpected response format: $response');
+    }
   }
 }

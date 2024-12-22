@@ -70,20 +70,20 @@ class DioClient implements NetworkServices {
 
   Future<dynamic> _requestWithOptionalDebounce(
       Future<Response<dynamic>> Function(CancelToken cancelToken) request,
-      {bool useDebounce = true}) async {
+      {bool useDebounce = false}) async {
     _activeCancelToken?.cancel();
     _debounceTimer?.cancel();
+    _activeCancelToken = CancelToken();
     if (!useDebounce) {
       return await _executeRequest(request, _activeCancelToken!);
     }
 
-    _activeCancelToken = CancelToken();
     Completer<dynamic> completer = Completer();
 
     _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
       try {
         final response = await request(_activeCancelToken!);
-        completer.complete(jsonDecode(response.toString()));
+        completer.complete(response.data);
       } on DioException catch (e) {
         completer.complete(
             e.response != null ? jsonDecode(e.response.toString()) : null);
@@ -97,11 +97,11 @@ class DioClient implements NetworkServices {
   }
 
   Future<dynamic> _executeRequest(
-      Future<Response<dynamic>> Function(CancelToken cancelToken) request,
+      Future<Response<dynamic>> Function(CancelToken) request,
       CancelToken cancelToken) async {
     try {
       final response = await request(cancelToken);
-      return jsonDecode(response.toString());
+      return response.data;
     } on DioException catch (e) {
       return e.response != null ? jsonDecode(e.response.toString()) : null;
     } catch (e) {
