@@ -12,11 +12,8 @@ class ServiceLocator {
   void initServiceLocators() {
     getIt.registerLazySingleton<NetworkServices>(() => DioClient());
 
-
-
     getIt.registerLazySingleton<LoginRepository>(
         () => LoginRepositoryDio(networkServices: getIt()));
-
 
     getIt.registerLazySingleton<ProductRepository>(
         () => ProductRepositoryImpl(networkServices: getIt()));

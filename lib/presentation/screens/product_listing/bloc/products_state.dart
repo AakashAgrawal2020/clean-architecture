@@ -1,11 +1,11 @@
 part of 'products_bloc.dart';
 
 class ProductsState extends Equatable {
-  List<ProductModel> products;
+  final List<ProductModel> products;
   final String message;
   final ApiStatus status;
 
-  ProductsState({
+  const ProductsState({
     this.products = const [],
     this.message = '',
     this.status = ApiStatus.initial,

@@ -10,13 +10,17 @@ class ProductRepositoryImpl extends ProductRepository {
 
   @override
   Future<List<ProductModel>> fetchProducts() async {
-    dynamic response = await networkServices.getAPI(Urls.productListRemotePath);
-    if (response is List) {
-      return response
-          .map((item) => ProductModel.fromJson(item as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw Exception('Unexpected response format: $response');
+    try {
+      final response = await networkServices.getAPI(Urls.productListRemotePath);
+      if (response != null && response is List<dynamic>) {
+        return response
+            .map((item) => ProductModel.fromJson(item as Map<String, dynamic>))
+            .toList();
+      } else {
+        throw Exception('Unexpected response format');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

@@ -8,17 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class NoInternet extends StatefulWidget {
-  final String? message;
-  final double? lottieHeight;
-  final double? lottieWidth;
-  final VoidCallback onTap;
+  final VoidCallback tryAgain;
 
-  const NoInternet(
-      {super.key,
-      required this.onTap,
-      this.message,
-      this.lottieHeight,
-      this.lottieWidth});
+  const NoInternet({super.key, required this.tryAgain});
 
   @override
   State<NoInternet> createState() => _NoInternetState();
@@ -27,23 +19,38 @@ class NoInternet extends StatefulWidget {
 class _NoInternetState extends State<NoInternet> with StyleExtension {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-            child: Lottie.asset(Lotties.loadingProducts,
-                width: widget.lottieWidth, height: widget.lottieHeight)),
-        widget.message != null
-            ? Padding(
-                padding: const EdgeInsets.only(
-                    left: Dimens.dm20,
-                    right: Dimens.dm20,
-                    bottom: Dimens.dm100),
-                child: Text(widget.message!,
-                    textAlign: TextAlign.center,
-                    style: textStyles(context).asgardTextStyle2))
-            : Dimens.dm100.verticalSpace,
-        PrimaryButton(onTap: widget.onTap, text: Strings.openNetworkSettings)
-      ],
-    );
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Center(
+          child: Lottie.asset(Lotties.noInternet,
+              width: context.contextWidth / 2)),
+      Padding(
+          padding: const EdgeInsets.all(Dimens.dm20),
+          child: Text(Strings.notInternetMessage,
+              textAlign: TextAlign.center,
+              style: textStyles(context).asgardTextStyle2)),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: Dimens.dm20,
+                      bottom: Dimens.dm60,
+                      left: Dimens.dm20,
+                      right: Dimens.dm10),
+                  child: PrimaryButton(
+                      onTap: widget.tryAgain, text: Strings.tryAgain))),
+          Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: Dimens.dm20,
+                      bottom: Dimens.dm60,
+                      right: Dimens.dm20,
+                      left: Dimens.dm10),
+                  child: PrimaryButton(
+                      onTap: () {}, text: Strings.networkSettings))),
+        ],
+      )
+    ]);
   }
 }

@@ -1,16 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:clean_architecture/core/config/urls.dart';
 import 'package:clean_architecture/core/network/network_services.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 class DioClient implements NetworkServices {
   static final DioClient _singleton = DioClient._internal();
   late final Dio _dio;
   final int _maxRetryAttempts = 3;
-
   Timer? _debounceTimer;
   CancelToken? _activeCancelToken;
 
@@ -27,24 +25,31 @@ class DioClient implements NetworkServices {
   }
 
   void _initializeInterceptors() {
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        debugPrint('Requesting: ${options.method} ${options.uri}');
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        debugPrint('Response received from ${response.requestOptions.uri}');
+    _dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
+      if (!await _isConnectedToInternet()) {
+        return handler.reject(DioException(
+            requestOptions: options,
+            type: DioExceptionType.connectionError,
+            error: 'No Internet Connection'));
+      }
+      return handler.next(options);
+    }, onResponse: (response, handler) {
         return handler.next(response);
       },
       onError: (DioException exception, handler) async {
         if (_shouldRetry(exception)) {
           await _retryRequest(exception, handler);
         } else {
-          _handleException(exception);
-          return handler.next(exception);
-        }
-      },
-    ));
+        final mappedException = _mapException(exception);
+        return handler.reject(mappedException);
+      }
+    }));
+  }
+
+  Future<bool> _isConnectedToInternet() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    return !connectivityResult.contains(ConnectivityResult.none);
   }
 
   bool _shouldRetry(DioException exception) {
@@ -52,8 +57,8 @@ class DioClient implements NetworkServices {
         exception.type == DioExceptionType.receiveTimeout;
   }
 
-  Future<void> _retryRequest(
-      DioException exception, ErrorInterceptorHandler handler) async {
+  Future<void> _retryRequest(DioException exception,
+      ErrorInterceptorHandler handler,) async {
     final requestOptions = exception.requestOptions;
     int retryCount = requestOptions.extra['retryCount'] ?? 0;
 
@@ -68,28 +73,37 @@ class DioClient implements NetworkServices {
     }
   }
 
+  DioException _mapException(DioException exception) {
+    if (exception.type == DioExceptionType.connectionError) {
+      return DioException(
+          requestOptions: exception.requestOptions,
+          type: DioExceptionType.connectionError,
+          error: 'Unable to connect. Please check your internet connection.');
+    }
+    return exception;
+  }
+
   Future<dynamic> _requestWithOptionalDebounce(
-      Future<Response<dynamic>> Function(CancelToken cancelToken) request,
-      {bool useDebounce = false}) async {
+    Future<Response<dynamic>> Function(CancelToken cancelToken) request, {
+    bool useDebounce = false,
+  }) async {
     _activeCancelToken?.cancel();
     _debounceTimer?.cancel();
     _activeCancelToken = CancelToken();
+
     if (!useDebounce) {
       return await _executeRequest(request, _activeCancelToken!);
     }
 
     Completer<dynamic> completer = Completer();
-
     _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
       try {
         final response = await request(_activeCancelToken!);
         completer.complete(response.data);
       } on DioException catch (e) {
-        completer.complete(
-            e.response != null ? jsonDecode(e.response.toString()) : null);
+        completer.completeError(_mapException(e));
       } catch (e) {
-        debugPrint('Unexpected error: $e');
-        completer.complete(null);
+        completer.completeError(Exception('Unexpected error'));
       }
     });
 
@@ -98,15 +112,15 @@ class DioClient implements NetworkServices {
 
   Future<dynamic> _executeRequest(
       Future<Response<dynamic>> Function(CancelToken) request,
-      CancelToken cancelToken) async {
+    CancelToken cancelToken,
+  ) async {
     try {
       final response = await request(cancelToken);
       return response.data;
     } on DioException catch (e) {
-      return e.response != null ? jsonDecode(e.response.toString()) : null;
+      throw _mapException(e);
     } catch (e) {
-      debugPrint('Unexpected error: $e');
-      return null;
+      throw Exception('Unexpected error');
     }
   }
 
@@ -123,35 +137,5 @@ class DioClient implements NetworkServices {
     return await _requestWithOptionalDebounce(
         (cancelToken) => _dio.post(path, data: data, cancelToken: cancelToken),
         useDebounce: useDebounce);
-  }
-
-  void _handleException(DioException exception) {
-    if (exception.type == DioExceptionType.connectionTimeout) {
-      debugPrint('Connection timeout occurred');
-    } else if (exception.type == DioExceptionType.receiveTimeout) {
-      debugPrint('Receive timeout occurred');
-    } else if (exception.response != null) {
-      switch (exception.response?.statusCode) {
-        case 400:
-          debugPrint('Bad request: ${exception.response?.data}');
-          break;
-        case 401:
-          debugPrint('Unauthorized: ${exception.response?.data}');
-          break;
-        case 403:
-          debugPrint('Forbidden: ${exception.response?.data}');
-          break;
-        case 404:
-          debugPrint('Not found: ${exception.response?.data}');
-          break;
-        case 500:
-          debugPrint('Internal server error');
-          break;
-        default:
-          debugPrint('Invalid status code: ${exception.response?.statusCode}');
-      }
-    } else {
-      debugPrint('Unexpected error: ${exception.message}');
-    }
   }
 }

@@ -1,4 +1,8 @@
+import 'package:clean_architecture/core/components/error.dart';
+import 'package:clean_architecture/core/components/no_internet.dart';
+import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
+import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
@@ -35,7 +39,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed && currentLocation == null) {
       _fetchLocation();
     }
   }
@@ -50,7 +54,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
   void _initializeAnimation(List<ProductModel> products) {
     for (int i = 0; i < products.length; i++) {
       _isVisible.add(false);
-      Future.delayed(Duration(milliseconds: i * 200), () {
+      Future.delayed(Duration(milliseconds: i * 80), () {
         setState(() {
           _isVisible[i] = true;
         });
@@ -80,38 +84,52 @@ class _ProductListingScreenState extends State<ProductListingScreen>
           bottom: false,
           child: BlocBuilder<ProductsBloc, ProductsState>(
             builder: (context, state) {
-              if (state.status == ApiStatus.loading) {
-                return PageLoading(
+              if (state.status == ApiStatus.noInternet) {
+                return NoInternet(tryAgain: () {
+                  context.read<ProductsBloc>().add((FetchProductsEvent()));
+                });
+              } else if (state.status == ApiStatus.loading) {
+                _isVisible = [];
+                return Loading(
+                    lottiePath: Lotties.loadingProducts,
                     message: Strings.productsLoadingMessage,
                     lottieHeight: context.contextWidth / 2);
-              } else if (state.status == ApiStatus.error) {
-                return const Center(child: Text('Error...'));
               } else if (state.status == ApiStatus.completed) {
                 if (state.products.isNotEmpty) {
-                  _initializeAnimation(state.products);
-                  return ListView.separated(
-                      itemCount: state.products.length,
-                      itemBuilder: (context, index) {
-                        return ProductCard(
-                            image: state.products[index].imageUrl,
-                            currentLocation: currentLocation,
-                            title: state.products[index].title,
-                            description: state.products[index].body,
-                            isVisible: _isVisible[index],
-                            latitude: state.products[index].coordinates[0],
-                            longitude: state.products[index].coordinates[1]);
+                  if (_isVisible.isEmpty) {
+                    _initializeAnimation(state.products);
+                  }
+                  return RefreshIndicator(
+                      backgroundColor: colours(context).backgroundColor,
+                      color: Colours.purple,
+                      onRefresh: () async {
+                        context
+                            .read<ProductsBloc>()
+                            .add((FetchProductsEvent()));
                       },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Dimens.dm20.verticalSpace;
-                      });
+                      child: ListView.separated(
+                          itemCount: state.products.length,
+                          itemBuilder: (context, index) {
+                            return ProductCard(
+                                image: state.products[index].imageUrl,
+                                currentLocation: currentLocation,
+                                title: state.products[index].title,
+                                description: state.products[index].body,
+                                isVisible: _isVisible[index],
+                                latitude: state.products[index].coordinates[0],
+                                longitude:
+                                    state.products[index].coordinates[1]);
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Dimens.dm20.verticalSpace;
+                          }));
                 } else {
-                  return ZeroProducts(
-                    message: Strings.zeroProductsMessage,
-                    lottieWidth: context.contextWidth / 2,
-                  );
+                  return const ZeroProducts();
                 }
               } else {
-                return const Center(child: Text('Something went wrong...'));
+                return Error(onTap: () {
+                  context.read<ProductsBloc>().add((FetchProductsEvent()));
+                });
               }
             },
           ),
