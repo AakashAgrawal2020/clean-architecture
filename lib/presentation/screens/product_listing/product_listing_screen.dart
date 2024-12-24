@@ -27,6 +27,7 @@ class ProductListingScreen extends StatefulWidget {
 class _ProductListingScreenState extends State<ProductListingScreen>
     with StyleExtension, WidgetsBindingObserver, TickerProviderStateMixin {
   late List<AnimationController> _animationControllers;
+  late AnimationController _googleMapAnimationController;
 
   @override
   void initState() {
@@ -84,35 +85,33 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                 });
               } else if (state.status == ApiStatus.loading) {
                 _animationControllers = [];
-                _animationControllers =
-                    AnimationUtils.createStaggeredControllers(
-                        vsync: this,
-                        itemCount: 1,
-                        itemDuration: 500,
-                        delayDuration: 150);
+                _animationControllers = AnimationUtils.createControllers(
+                    vsync: this,
+                    itemCount: 1,
+                    autoPlay: true,
+                    itemDuration: 500,
+                    delayDuration: 150);
                 return AnimatedBuilder(
                   animation: _animationControllers[0],
                   builder: (context, child) {
-                    return FadeTransition(
-                      opacity: _animationControllers[0]
-                          .drive(CurveTween(curve: Curves.easeIn)),
-                      child: Loading(
+                      return Loading(
+                          animationController: _animationControllers[0],
                           lottiePath: Lotties.loadingProducts,
                           message: Strings.productsLoadingMessage,
-                          lottieHeight: context.contextWidth / 2),
-                    );
-                  },
-                );
+                          lottieHeight: context.contextWidth / 2);
+                    });
               } else if (state.status == ApiStatus.completed) {
                 if (state.products.isNotEmpty) {
                   _animationControllers = [];
-                  _animationControllers =
-                      AnimationUtils.createStaggeredControllers(
-                          vsync: this,
-                          itemCount: state.products.length,
-                          itemDuration: 500,
-                          delayDuration: 150);
-
+                  _animationControllers = AnimationUtils.createControllers(
+                      vsync: this,
+                      autoPlay: true,
+                      itemCount: state.products.length,
+                      itemDuration: 500,
+                      delayDuration: 150);
+                  _googleMapAnimationController =
+                      AnimationUtils.createController(
+                          vsync: this, autoPlay: true, itemDuration: 750);
                   return RefreshIndicator(
                     backgroundColor: colours(context).backgroundColor,
                     color: Colours.purple,
@@ -122,7 +121,10 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                     child: CustomScrollView(
                       slivers: [
                         SliverToBoxAdapter(
-                            child: GoogleMapAsgard(products: state.products)),
+                            child: GoogleMapAsgard(
+                                products: state.products,
+                                animationController:
+                                    _googleMapAnimationController)),
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
                               childCount: state.products.length,
@@ -130,27 +132,17 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                             return AnimatedBuilder(
                               animation: _animationControllers[index],
                               builder: (context, child) {
-                                  return SlideTransition(
-                                  position: Tween<Offset>(
-                                          begin: const Offset(-1.0, 0.2),
-                                          end: Offset.zero)
-                                      .animate(CurvedAnimation(
-                                          parent: _animationControllers[index],
-                                          curve: Curves.decelerate)),
-                                  child: FadeTransition(
-                                    opacity: _animationControllers[index].drive(
-                                        CurveTween(curve: Curves.easeIn)),
-                                    child: ProductCard(
-                                      image: state.products[index].imageUrl,
-                                      currentLocation: currentLocation,
-                                      title: state.products[index].title,
-                                      description: state.products[index].body,
-                                      latitude:
-                                          state.products[index].coordinates[0],
-                                      longitude:
-                                          state.products[index].coordinates[1],
-                                    ),
-                                  ),
+                                return ProductCard(
+                                  animationController:
+                                      _animationControllers[index],
+                                  image: state.products[index].imageUrl,
+                                  currentLocation: currentLocation,
+                                  title: state.products[index].title,
+                                  description: state.products[index].body,
+                                  latitude:
+                                      state.products[index].coordinates[0],
+                                  longitude:
+                                      state.products[index].coordinates[1],
                                 );
                               },
                             );
