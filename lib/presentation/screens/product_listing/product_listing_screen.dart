@@ -32,7 +32,9 @@ class _ProductListingScreenState extends State<ProductListingScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _animationControllers = [];
-    _fetchLocation();
+    if (currentLocation == null) {
+      _fetchLocation();
+    }
   }
 
   @override
@@ -87,7 +89,6 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                         itemCount: 1,
                         itemDuration: 500,
                         delayDuration: 150);
-
                 return AnimatedBuilder(
                   animation: _animationControllers[0],
                   builder: (context, child) {
@@ -126,23 +127,29 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                                 animation: _animationControllers[index],
                                 builder: (context, child) {
                                   return SlideTransition(
-                                    position: Tween<Offset>(
-                                            begin: const Offset(-1.0, 0.2),
-                                            end: Offset.zero)
-                                        .animate(CurvedAnimation(
-                                            parent:
-                                                _animationControllers[index],
-                                            curve: Curves.decelerate)),
-                                    child: ProductCard(
-                                        image: state.products[index].imageUrl,
-                                        currentLocation: currentLocation,
-                                        title: state.products[index].title,
-                                        description: state.products[index].body,
-                                        latitude: state
-                                            .products[index].coordinates[0],
-                                        longitude: state
-                                            .products[index].coordinates[1]),
-                                  );
+                                      position: Tween<Offset>(
+                                              begin: const Offset(-1.0, 0.2),
+                                              end: Offset.zero)
+                                          .animate(CurvedAnimation(
+                                              parent:
+                                                  _animationControllers[index],
+                                              curve: Curves.decelerate)),
+                                      child: FadeTransition(
+                                        opacity: _animationControllers[index]
+                                            .drive(CurveTween(
+                                                curve: Curves.easeIn)),
+                                        child: ProductCard(
+                                            image:
+                                                state.products[index].imageUrl,
+                                            currentLocation: currentLocation,
+                                            title: state.products[index].title,
+                                            description:
+                                                state.products[index].body,
+                                            latitude: state
+                                                .products[index].coordinates[0],
+                                            longitude: state.products[index]
+                                                .coordinates[1]),
+                                      ));
                                 });
                           }));
                 } else {
