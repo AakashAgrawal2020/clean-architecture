@@ -51,5 +51,9 @@
     <string>Your location is needed for better user experience.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>We need your location to provide better services.</string>
+    <key>GMSApiKey</key>
+    <string>AIzaSyAsi3XSvcad47GTmV4vJh_novoRVzqEGGQ</string>
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
 </dict>
 </plist>

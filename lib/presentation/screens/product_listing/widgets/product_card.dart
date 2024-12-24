@@ -1,4 +1,4 @@
-import 'package:clean_architecture/core/components/flush_bar/customizable_network_image.dart';
+import 'package:clean_architecture/core/components/customizable_network_image.dart';
 import 'package:clean_architecture/core/components/primary_button.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';

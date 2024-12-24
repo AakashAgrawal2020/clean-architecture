@@ -10,6 +10,7 @@ import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/location_permission_handler.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/bloc/products_bloc.dart';
+import 'package:clean_architecture/presentation/screens/product_listing/widgets/google_map_asgard.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/widgets/page_loading.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/widgets/product_card.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/widgets/zero_products.dart';
@@ -79,7 +80,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
             builder: (context, state) {
               if (state.status == ApiStatus.noInternet) {
                 return NoInternet(tryAgain: () {
-                  context.read<ProductsBloc>().add((FetchProductsEvent()));
+                  context.read<ProductsBloc>().add(FetchProductsEvent());
                 });
               } else if (state.status == ApiStatus.loading) {
                 _animationControllers = [];
@@ -113,51 +114,57 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                           delayDuration: 150);
 
                   return RefreshIndicator(
-                      backgroundColor: colours(context).backgroundColor,
-                      color: Colours.purple,
-                      onRefresh: () async {
-                        context
-                            .read<ProductsBloc>()
-                            .add((FetchProductsEvent()));
-                      },
-                      child: ListView.builder(
-                          itemCount: state.products.length,
-                          itemBuilder: (context, index) {
+                    backgroundColor: colours(context).backgroundColor,
+                    color: Colours.purple,
+                    onRefresh: () async {
+                      context.read<ProductsBloc>().add(FetchProductsEvent());
+                    },
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                            child: GoogleMapAsgard(products: state.products)),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                              childCount: state.products.length,
+                              (context, index) {
                             return AnimatedBuilder(
-                                animation: _animationControllers[index],
-                                builder: (context, child) {
+                              animation: _animationControllers[index],
+                              builder: (context, child) {
                                   return SlideTransition(
-                                      position: Tween<Offset>(
-                                              begin: const Offset(-1.0, 0.2),
-                                              end: Offset.zero)
-                                          .animate(CurvedAnimation(
-                                              parent:
-                                                  _animationControllers[index],
-                                              curve: Curves.decelerate)),
-                                      child: FadeTransition(
-                                        opacity: _animationControllers[index]
-                                            .drive(CurveTween(
-                                                curve: Curves.easeIn)),
-                                        child: ProductCard(
-                                            image:
-                                                state.products[index].imageUrl,
-                                            currentLocation: currentLocation,
-                                            title: state.products[index].title,
-                                            description:
-                                                state.products[index].body,
-                                            latitude: state
-                                                .products[index].coordinates[0],
-                                            longitude: state.products[index]
-                                                .coordinates[1]),
-                                      ));
-                                });
-                          }));
+                                  position: Tween<Offset>(
+                                          begin: const Offset(-1.0, 0.2),
+                                          end: Offset.zero)
+                                      .animate(CurvedAnimation(
+                                          parent: _animationControllers[index],
+                                          curve: Curves.decelerate)),
+                                  child: FadeTransition(
+                                    opacity: _animationControllers[index].drive(
+                                        CurveTween(curve: Curves.easeIn)),
+                                    child: ProductCard(
+                                      image: state.products[index].imageUrl,
+                                      currentLocation: currentLocation,
+                                      title: state.products[index].title,
+                                      description: state.products[index].body,
+                                      latitude:
+                                          state.products[index].coordinates[0],
+                                      longitude:
+                                          state.products[index].coordinates[1],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
+                  );
                 } else {
                   return const ZeroProducts();
                 }
               } else {
                 return Error(onTap: () {
-                  context.read<ProductsBloc>().add((FetchProductsEvent()));
+                  context.read<ProductsBloc>().add(FetchProductsEvent());
                 });
               }
             },
