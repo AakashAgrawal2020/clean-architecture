@@ -25,6 +25,8 @@ class Strings {
       'Yikes! Looks like a glitch in the matrix—try again for awesome products!';
 
   static String tryAgain = 'Try again';
+  static String tapToUnveilMap = 'Tap to Unveil the Products Exact Location on the Map!';
+
   static String networkSettings = 'Network Settings';
 
   static String notInternetMessage =

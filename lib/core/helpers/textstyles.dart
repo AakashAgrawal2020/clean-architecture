@@ -11,8 +11,8 @@ class TextStyles {
       fontStyle: Fonts.normal);
 
   static TextStyle? textStyle2 = const TextStyle(
-      fontSize: Fonts.fs20,
+      fontSize: Fonts.fs18,
       fontWeight: Fonts.fw700,
-      color: Colours.black,
+      color: Colours.ng1000,
       fontStyle: Fonts.normal);
 }
