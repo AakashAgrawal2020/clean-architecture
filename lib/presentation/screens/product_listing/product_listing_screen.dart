@@ -3,11 +3,11 @@ import 'package:clean_architecture/core/components/no_internet.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
-import 'package:clean_architecture/core/utils/animations.dart';
+import 'package:clean_architecture/core/utils/animations_util.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
-import 'package:clean_architecture/core/utils/location_permission_handler.dart';
+import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/bloc/products_bloc.dart';
 import 'package:clean_architecture/presentation/screens/product_listing/widgets/google_map_asgard.dart';
@@ -86,7 +86,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                 });
               } else if (state.status == ApiStatus.loading) {
                 _animationControllers = [];
-                _animationControllers = AnimationUtils.createControllers(
+                _animationControllers = AnimationsUtil.createControllers(
                     vsync: this,
                     itemCount: 1,
                     autoPlay: true,
@@ -100,14 +100,14 @@ class _ProductListingScreenState extends State<ProductListingScreen>
               } else if (state.status == ApiStatus.completed) {
                 if (state.products.isNotEmpty) {
                   _animationControllers = [];
-                  _animationControllers = AnimationUtils.createControllers(
+                  _animationControllers = AnimationsUtil.createControllers(
                       vsync: this,
                       autoPlay: true,
                       itemCount: state.products.length,
                       itemDuration: 500,
                       delayDuration: 150);
                   _googleMapAnimationController =
-                      AnimationUtils.createController(
+                      AnimationsUtil.createController(
                           vsync: this, autoPlay: true, itemDuration: 750);
                   return RefreshIndicator(
                     backgroundColor: colours(context).backgroundColor,

@@ -1,6 +1,6 @@
 import 'package:flutter/animation.dart';
 
-class AnimationUtils {
+class AnimationsUtil {
   static List<AnimationController> createControllers(
       {required int itemCount,
       required TickerProvider vsync,

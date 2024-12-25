@@ -5,7 +5,7 @@ import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
-import 'package:clean_architecture/core/utils/location_permission_handler.dart';
+import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 

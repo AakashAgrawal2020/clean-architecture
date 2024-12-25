@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:clean_architecture/core/utils/location_permission_handler.dart';
+import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:clean_architecture/presentation/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 

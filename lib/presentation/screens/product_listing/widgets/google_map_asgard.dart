@@ -47,6 +47,7 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
     _customIcon = await BitmapDescriptor.asset(
         const ImageConfiguration(size: Size(Dimens.dm30, Dimens.dm30)),
         Pngs.asgardLogo);
+
     for (int i = 0; i < widget.products.length; i++) {
       _markers.add(Marker(
           markerId: MarkerId('marker_$i'),
