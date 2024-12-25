@@ -3,6 +3,7 @@ import 'package:clean_architecture/core/components/primary_button.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
+import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/location_permission_handler.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
   @override
   Widget build(BuildContext context) {
     return SlideTransition(
-      position: Tween<Offset>(begin: const Offset(-1.0, 0.2), end: Offset.zero)
+      position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
           .animate(CurvedAnimation(
               parent: widget.animationController, curve: Curves.decelerate)),
       child: FadeTransition(
@@ -58,8 +59,6 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
             decoration: BoxDecoration(
                 color: colours(context).backgroundColor,
                 borderRadius: BorderRadius.circular(Dimens.dm10),
-                border: Border.all(
-                    color: colours(context).tileColor, width: Dimens.dm1),
                 boxShadow: [
                   BoxShadow(
                       color: colours(context).shadowColor1,
@@ -68,34 +67,33 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                       offset: const Offset(Dimens.dm0, Dimens.dm4))
                 ]),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  CustomizableNetworkImage(
-                      imgUrl: widget.image,
-                      placeholderImgPath: Pngs.asgardLogo,
-                      imgWidth: Dimens.dm150,
-                      imgHeight: Dimens.dm150,
-                      boxFit: BoxFit.cover,
-                      imgFadeInDuration: 200,
-                      imgFadeOutDuration: 100,
-                      placeholderFadeInDuration: 0,
-                      placeholderPadding: Dimens.dm40,
-                      borderRadius: BorderRadius.circular(Dimens.dm10)),
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: Dimens.dm20, vertical: Dimens.dm10),
-                          child: Text(
-                              '${widget.title} ${widget.title} ${widget.title} ${widget.title}  ${widget.title} ${widget.title} ${widget.title} ',
-                              style: textStyles(context).asgardTextStyle2)))
-                ]),
+                CustomizableNetworkImage(
+                    imgUrl: widget.image,
+                    placeholderImgPath: Pngs.asgardLogo,
+                    imgWidth: context.contextWidth - 42,
+                    imgHeight: Dimens.dm200,
+                    boxFit: BoxFit.cover,
+                    imgFadeInDuration: 200,
+                    imgFadeOutDuration: 100,
+                    placeholderFadeInDuration: 0,
+                    placeholderPadding: Dimens.dm40,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(Dimens.dm10),
+                        topRight: Radius.circular(Dimens.dm10))),
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: Dimens.dm10, horizontal: Dimens.dm16),
-                    child: Text(
-                        '${widget.description} ${widget.description} ${widget.description} ${widget.description} ${widget.description} ${widget.description}',
-                        style: textStyles(context).asgardTextStyle3)),
+                    child: Text(widget.title,
+                        style: textStyles(context).asgardTextStyle2,
+                        textAlign: TextAlign.center)),
+                const Divider(height: 2, color: Colours.ng100),
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: Dimens.dm10, horizontal: Dimens.dm16),
+                    child: Text(widget.description,
+                        style: textStyles(context).asgardTextStyle3,
+                        textAlign: TextAlign.center)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

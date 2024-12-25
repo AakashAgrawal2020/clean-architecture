@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:clean_architecture/core/helpers/colours.dart';
+import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:flutter/material.dart';
 
 class CustomizableNetworkImage extends StatelessWidget {
@@ -28,27 +30,32 @@ class CustomizableNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: borderRadius,
-      child: CachedNetworkImage(
-          width: imgWidth,
-          height: imgHeight,
-          fit: boxFit,
-          imageUrl: imgUrl,
-          placeholder: (context, url) {
-            return Padding(
-                padding: EdgeInsets.all(placeholderPadding),
-                child: Image.asset(placeholderImgPath));
-          },
-          errorWidget: (context, url, error) {
-            return Padding(
-                padding: EdgeInsets.all(placeholderPadding),
-                child: Image.asset(placeholderImgPath));
-          },
-          fadeInDuration: Duration(milliseconds: imgFadeInDuration),
-          fadeOutDuration: Duration(milliseconds: imgFadeOutDuration),
-          placeholderFadeInDuration:
-              Duration(milliseconds: placeholderFadeInDuration)),
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(width: Dimens.dm1, color: Colours.ng100),
+          borderRadius: borderRadius),
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: CachedNetworkImage(
+            width: imgWidth,
+            height: imgHeight,
+            fit: boxFit,
+            imageUrl: imgUrl,
+            placeholder: (context, url) {
+              return Padding(
+                  padding: EdgeInsets.all(placeholderPadding),
+                  child: Image.asset(placeholderImgPath));
+            },
+            errorWidget: (context, url, error) {
+              return Padding(
+                  padding: EdgeInsets.all(placeholderPadding),
+                  child: Image.asset(placeholderImgPath));
+            },
+            fadeInDuration: Duration(milliseconds: imgFadeInDuration),
+            fadeOutDuration: Duration(milliseconds: imgFadeOutDuration),
+            placeholderFadeInDuration:
+                Duration(milliseconds: placeholderFadeInDuration)),
+      ),
     );
   }
 }

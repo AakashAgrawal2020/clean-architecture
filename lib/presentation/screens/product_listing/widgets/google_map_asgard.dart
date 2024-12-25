@@ -89,8 +89,17 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
       child: Container(
         height: context.contextHeight / 2.2,
         width: context.contextWidth,
-        color: colours(context).backgroundColor,
         margin: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
+        decoration: BoxDecoration(
+            color: colours(context).backgroundColor,
+            borderRadius: BorderRadius.circular(Dimens.dm20),
+            boxShadow: [
+              BoxShadow(
+                  color: colours(context).shadowColor1,
+                  spreadRadius: Dimens.dm1,
+                  blurRadius: Dimens.dm10,
+                  offset: const Offset(Dimens.dm0, Dimens.dm4))
+            ]),
         child: Stack(
           children: [
             ClipRRect(
@@ -140,7 +149,7 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
                             borderRadius: BorderRadius.circular(Dimens.dm20),
                             boxShadow: [
                               BoxShadow(
-                                  color: Colours.black.withOpacity(0.7),
+                                  color: Colours.purple.withOpacity(0.5),
                                   blurRadius: Dimens.dm20,
                                   offset: const Offset(5, 5))
                             ]),
@@ -156,38 +165,37 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
                                 CustomizableNetworkImage(
                                     imgUrl: _selectedProduct!.imageUrl,
                                     placeholderImgPath: Pngs.asgardLogo,
-                                    imgWidth: Dimens.dm50,
-                                    imgHeight: Dimens.dm50,
-                                    boxFit: BoxFit.cover,
+                                      imgWidth: Dimens.dm60,
+                                      imgHeight: Dimens.dm60,
+                                      boxFit: BoxFit.cover,
                                     imgFadeInDuration: 200,
                                     imgFadeOutDuration: 100,
                                     placeholderFadeInDuration: 0,
                                     placeholderPadding: Dimens.dm10,
                                     borderRadius:
-                                        BorderRadius.circular(Dimens.dm10)),
-                                Expanded(
+                                          BorderRadius.circular(Dimens.dm100)),
+                                  Expanded(
                                     child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: Dimens.dm10),
                                   child: Text(_selectedProduct!.title,
                                       style:
                                           textStyles(context).asgardTextStyle1,
-                                      textAlign: TextAlign.center),
-                                ))
-                              ]),
-                            ),
-                            Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: Dimens.dm10),
-                                height: Dimens.dm2,
-                                color: Colours.ng200),
+                                              textAlign: TextAlign.center)))
+                                ])),
+                            const Padding(
+                                padding:
+                                    EdgeInsets.symmetric(vertical: Dimens.dm2),
+                                child: Divider(
+                                    thickness: Dimens.dm2,
+                                    color: Colours.ng200)),
                             Padding(
                                 padding: const EdgeInsets.only(
                                     left: Dimens.dm10,
                                     right: Dimens.dm10,
                                     bottom: Dimens.dm10),
                                 child: Text(_selectedProduct!.body,
-                                    style: textStyles(context).asgardTextStyle2,
+                                    style: textStyles(context).asgardTextStyle3,
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     overflow: TextOverflow.clip))

@@ -1,6 +1,7 @@
 import 'package:clean_architecture/core/components/error.dart';
 import 'package:clean_architecture/core/components/no_internet.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
+import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/utils/animations.dart';
@@ -60,6 +61,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
     for (var controller in _animationControllers) {
       controller.dispose();
     }
+    _googleMapAnimationController.dispose();
     super.dispose();
   }
 
@@ -71,7 +73,15 @@ class _ProductListingScreenState extends State<ProductListingScreen>
           backgroundColor: colours(context).backgroundColor,
           surfaceTintColor: colours(context).backgroundColor,
           title: Text(Strings.productListingScreenHeading,
-              style: textStyles(context).asgardTextStyle2)),
+              style: textStyles(context).asgardTextStyle2),
+          actions: [
+            Padding(
+                padding: const EdgeInsets.only(right: Dimens.dm20),
+                child: IconButton(
+                    icon: const Icon(Icons.map_outlined,
+                        color: Colours.purple, size: 30),
+                    onPressed: () {}))
+          ]),
       body: BlocProvider(
         create: (context) =>
             ProductsBloc(productRepository: getIt())..add(FetchProductsEvent()),
