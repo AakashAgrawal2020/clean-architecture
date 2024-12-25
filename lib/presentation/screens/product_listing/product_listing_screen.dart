@@ -1,7 +1,6 @@
 import 'package:clean_architecture/core/components/error.dart';
 import 'package:clean_architecture/core/components/no_internet.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
-import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/utils/animations.dart';
@@ -73,15 +72,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
           backgroundColor: colours(context).backgroundColor,
           surfaceTintColor: colours(context).backgroundColor,
           title: Text(Strings.productListingScreenHeading,
-              style: textStyles(context).asgardTextStyle2),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: Dimens.dm20),
-                child: IconButton(
-                    icon: const Icon(Icons.map_outlined,
-                        color: Colours.purple, size: 30),
-                    onPressed: () {}))
-          ]),
+              style: textStyles(context).asgardTextStyle2)),
       body: BlocProvider(
         create: (context) =>
             ProductsBloc(productRepository: getIt())..add(FetchProductsEvent()),
@@ -101,15 +92,11 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                     autoPlay: true,
                     itemDuration: 500,
                     delayDuration: 150);
-                return AnimatedBuilder(
-                  animation: _animationControllers[0],
-                  builder: (context, child) {
-                      return Loading(
-                          animationController: _animationControllers[0],
-                          lottiePath: Lotties.loadingProducts,
-                          message: Strings.productsLoadingMessage,
-                          lottieHeight: context.contextWidth / 2);
-                    });
+                return Loading(
+                    animationController: _animationControllers[0],
+                    lottiePath: Lotties.loadingProducts,
+                    message: Strings.productsLoadingMessage,
+                    lottieHeight: context.contextWidth / 2);
               } else if (state.status == ApiStatus.completed) {
                 if (state.products.isNotEmpty) {
                   _animationControllers = [];
@@ -139,23 +126,17 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                           delegate: SliverChildBuilderDelegate(
                               childCount: state.products.length,
                               (context, index) {
-                            return AnimatedBuilder(
-                              animation: _animationControllers[index],
-                              builder: (context, child) {
-                                return ProductCard(
-                                  animationController:
-                                      _animationControllers[index],
-                                  image: state.products[index].imageUrl,
-                                  currentLocation: currentLocation,
-                                  title: state.products[index].title,
-                                  description: state.products[index].body,
-                                  latitude:
+                            return ProductCard(
+                                animationController:
+                                    _animationControllers[index],
+                                image: state.products[index].imageUrl,
+                                currentLocation: currentLocation,
+                                title: state.products[index].title,
+                                description: state.products[index].body,
+                                latitude:
                                       state.products[index].coordinates[0],
                                   longitude:
-                                      state.products[index].coordinates[1],
-                                );
-                              },
-                            );
+                                    state.products[index].coordinates[1]);
                           }),
                         ),
                       ],

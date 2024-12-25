@@ -77,7 +77,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                     imgFadeInDuration: 200,
                     imgFadeOutDuration: 100,
                     placeholderFadeInDuration: 0,
-                    placeholderPadding: Dimens.dm40,
+                    placeholderPadding: Dimens.dm60,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(Dimens.dm10),
                         topRight: Radius.circular(Dimens.dm10))),

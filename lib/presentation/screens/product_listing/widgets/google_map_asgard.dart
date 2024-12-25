@@ -2,6 +2,7 @@ import 'package:clean_architecture/core/components/customizable_network_image.da
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
+import 'package:clean_architecture/core/helpers/textstyles.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
@@ -26,12 +27,14 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
   ProductModel? _selectedProduct;
   GoogleMapController? _mapController;
   late AnimationController _markerAnimationController;
+  late double _mapHeight;
 
   @override
   void initState() {
     super.initState();
     _markerAnimationController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
+    _mapHeight = 100;
   }
 
   @override
@@ -82,132 +85,166 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero)
-          .animate(CurvedAnimation(
-              parent: widget.animationController, curve: Curves.decelerate)),
-      child: Container(
-        height: context.contextHeight / 2.2,
-        width: context.contextWidth,
-        margin: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
-        decoration: BoxDecoration(
-            color: colours(context).backgroundColor,
-            borderRadius: BorderRadius.circular(Dimens.dm20),
-            boxShadow: [
-              BoxShadow(
-                  color: colours(context).shadowColor1,
-                  spreadRadius: Dimens.dm1,
-                  blurRadius: Dimens.dm10,
-                  offset: const Offset(Dimens.dm0, Dimens.dm4))
-            ]),
-        child: Stack(
-          children: [
-            ClipRRect(
+    return ScaleTransition(
+      scale: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+          parent: widget.animationController, curve: Curves.easeInOut)),
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+            height: _mapHeight,
+            width: context.contextWidth,
+            margin: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
+            decoration: BoxDecoration(
+                color: colours(context).backgroundColor,
                 borderRadius: BorderRadius.circular(Dimens.dm20),
-                child: GoogleMap(
-                  myLocationButtonEnabled: false,
-                  mapType: MapType.terrain,
-                  markers: _markers,
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(widget.products[0].coordinates[0],
-                          widget.products[0].coordinates[1]),
-                      zoom: 1.0),
-                  onMapCreated: (GoogleMapController controller) {
-                    _mapController = controller;
-                    _initializeMarkers();
-                  },
-                  onTap: (_) {
-                    if (_markerAnimationController.isCompleted) {
-                      _markerAnimationController.reverse().then((_) {
-                        setState(() {
-                          _selectedProduct = null;
-                        });
-                      });
-                    }
-                  },
-                )),
-            if (_selectedProduct != null)
-              ScaleTransition(
-                scale: Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
-                    parent: _markerAnimationController, curve: Curves.ease)),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: Dimens.dm20),
-                  child: InkWell(
-                    onTap: () {
-                      _markerAnimationController.reverse().then((_) {
-                        setState(() {
-                          _selectedProduct = null;
-                        });
-                      });
-                    },
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        width: context.contextWidth / 2.2,
-                        decoration: BoxDecoration(
-                            color: Colours.white.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(Dimens.dm20),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colours.purple.withOpacity(0.5),
-                                  blurRadius: Dimens.dm20,
-                                  offset: const Offset(5, 5))
-                            ]),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: Dimens.dm10,
-                                  right: Dimens.dm10,
-                                  top: Dimens.dm10),
-                              child: Row(children: [
-                                CustomizableNetworkImage(
-                                    imgUrl: _selectedProduct!.imageUrl,
-                                    placeholderImgPath: Pngs.asgardLogo,
-                                      imgWidth: Dimens.dm60,
-                                      imgHeight: Dimens.dm60,
-                                      boxFit: BoxFit.cover,
-                                    imgFadeInDuration: 200,
-                                    imgFadeOutDuration: 100,
-                                    placeholderFadeInDuration: 0,
-                                    placeholderPadding: Dimens.dm10,
-                                    borderRadius:
-                                          BorderRadius.circular(Dimens.dm100)),
-                                  Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: Dimens.dm10),
-                                  child: Text(_selectedProduct!.title,
-                                      style:
-                                          textStyles(context).asgardTextStyle1,
-                                              textAlign: TextAlign.center)))
-                                ])),
-                            const Padding(
-                                padding:
-                                    EdgeInsets.symmetric(vertical: Dimens.dm2),
-                                child: Divider(
-                                    thickness: Dimens.dm2,
-                                    color: Colours.ng200)),
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: Dimens.dm10,
-                                    right: Dimens.dm10,
-                                    bottom: Dimens.dm10),
-                                child: Text(_selectedProduct!.body,
-                                    style: textStyles(context).asgardTextStyle3,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.clip))
-                          ],
+                boxShadow: [
+                  BoxShadow(
+                      color: colours(context).shadowColor1,
+                      spreadRadius: Dimens.dm1,
+                      blurRadius: Dimens.dm10,
+                      offset: const Offset(Dimens.dm0, Dimens.dm4))
+                ]),
+            child: Stack(
+              children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(Dimens.dm20),
+                    child: GoogleMap(
+                      myLocationButtonEnabled: false,
+                      mapType: MapType.terrain,
+                      markers: _markers,
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(widget.products[0].coordinates[0],
+                              widget.products[0].coordinates[1]),
+                          zoom: 1.0),
+                      onMapCreated: (GoogleMapController controller) {
+                        _mapController = controller;
+                        _initializeMarkers();
+                      },
+                      onTap: (_) {
+                        if (_markerAnimationController.isCompleted) {
+                          _markerAnimationController.reverse().then((_) {
+                            setState(() {
+                              _selectedProduct = null;
+                            });
+                          });
+                        }
+                      },
+                    )),
+                if (_selectedProduct != null)
+                  ScaleTransition(
+                    scale: Tween<double>(begin: 0, end: 1).animate(
+                        CurvedAnimation(
+                            parent: _markerAnimationController,
+                            curve: Curves.ease)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: Dimens.dm20),
+                      child: InkWell(
+                        onTap: () {
+                          _markerAnimationController.reverse().then((_) {
+                            setState(() {
+                              _selectedProduct = null;
+                            });
+                          });
+                        },
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            width: context.contextWidth / 2.2,
+                            decoration: BoxDecoration(
+                                color: Colours.white.withOpacity(0.9),
+                                borderRadius:
+                                    BorderRadius.circular(Dimens.dm20),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colours.purple.withOpacity(0.5),
+                                      blurRadius: Dimens.dm20,
+                                      offset: const Offset(5, 5))
+                                ]),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: Dimens.dm10,
+                                        right: Dimens.dm10,
+                                        top: Dimens.dm10),
+                                    child: Row(children: [
+                                      CustomizableNetworkImage(
+                                          imgUrl: _selectedProduct!.imageUrl,
+                                          placeholderImgPath: Pngs.asgardLogo,
+                                          imgWidth: Dimens.dm60,
+                                          imgHeight: Dimens.dm60,
+                                          boxFit: BoxFit.cover,
+                                          imgFadeInDuration: 200,
+                                          imgFadeOutDuration: 100,
+                                          placeholderFadeInDuration: 0,
+                                          placeholderPadding: Dimens.dm10,
+                                          borderRadius: BorderRadius.circular(
+                                              Dimens.dm100)),
+                                      Expanded(
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: Dimens.dm10),
+                                              child: Text(
+                                                  _selectedProduct!.title,
+                                                  style: textStyles(context)
+                                                      .asgardTextStyle1,
+                                                  textAlign: TextAlign.center)))
+                                    ])),
+                                const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: Dimens.dm2),
+                                    child: Divider(
+                                        thickness: Dimens.dm2,
+                                        color: Colours.ng200)),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: Dimens.dm10,
+                                        right: Dimens.dm10,
+                                        bottom: Dimens.dm10),
+                                    child: Text(_selectedProduct!.body,
+                                        style: textStyles(context)
+                                            .asgardTextStyle3,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.clip))
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-          ],
-        ),
+              ],
+            ),
+          ),
+          _mapHeight == 100
+              ? InkWell(
+                  onTap: () {
+                    setState(() {
+                      _mapHeight = context.contextHeight / 3;
+                    });
+                  },
+                  child: Container(
+                      height: Dimens.dm100,
+                      margin:
+                          const EdgeInsets.symmetric(horizontal: Dimens.dm20),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: Dimens.dm20),
+                      decoration: BoxDecoration(
+                          color: Colours.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(Dimens.dm20)),
+                      child: Center(
+                          child: Text(
+                              'Tap to Unveil the Products Exact Location on the Map!',
+                              style: TextStyles.textStyle2,
+                              textAlign: TextAlign.center))),
+                )
+              : const SizedBox.shrink()
+        ],
       ),
     );
   }
