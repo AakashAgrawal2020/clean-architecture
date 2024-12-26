@@ -59,15 +59,11 @@ class _PrimaryButtonState extends State<PrimaryButton> with StyleExtension {
                         offset: const Offset(Dimens.dm0, Dimens.dm4))
                   ]
                 : []),
-        child: Center(
-          child: widget.status != ApiStatus.loading
-              ? Text(widget.text,
-                  style: TextStyles.textStyle1, textAlign: TextAlign.center)
-              : const CircularLoader(
-                  height: Dimens.dm25,
-                  width: Dimens.dm25,
-                  color: Colours.white),
-        ),
+        child: widget.status != ApiStatus.loading
+            ? Text(widget.text,
+                style: TextStyles.textStyle1, textAlign: TextAlign.center)
+            : const CircularLoader(
+                height: Dimens.dm25, width: Dimens.dm25, color: Colours.white),
       ),
     );
   }

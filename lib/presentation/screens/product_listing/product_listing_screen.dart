@@ -127,16 +127,10 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                               childCount: state.products.length,
                               (context, index) {
                             return ProductCard(
+                                currentLocation: currentLocation,
                                 animationController:
                                     _animationControllers[index],
-                                image: state.products[index].imageUrl,
-                                currentLocation: currentLocation,
-                                title: state.products[index].title,
-                                description: state.products[index].body,
-                                latitude:
-                                      state.products[index].coordinates[0],
-                                  longitude:
-                                    state.products[index].coordinates[1]);
+                                product: state.products[index]);
                           }),
                         ),
                       ],

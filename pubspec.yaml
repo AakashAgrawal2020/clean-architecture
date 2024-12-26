@@ -24,6 +24,9 @@ dependencies:
   lottie: ^2.7.0
   connectivity_plus: ^6.1.1
   google_maps_flutter: ^2.2.4
+  geocoding: ^3.0.0
+  cupertino_icons: ^1.0.8
+  http: ^1.2.2
 
 
 

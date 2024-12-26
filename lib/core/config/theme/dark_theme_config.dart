@@ -19,7 +19,7 @@ final darkTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
           fontStyle: Fonts.normal),
       asgardTextStyle3: TextStyle(
           fontSize: Fonts.fs20,
-          fontWeight: Fonts.fw400,
+          fontWeight: Fonts.fw500,
           color: Colours.white,
           fontStyle: Fonts.normal),
       asgardTextStyle4: TextStyle(

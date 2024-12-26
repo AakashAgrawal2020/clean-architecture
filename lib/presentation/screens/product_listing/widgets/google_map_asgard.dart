@@ -117,7 +117,7 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
                   initialCameraPosition: CameraPosition(
                       target: LatLng(widget.products[0].coordinates[0],
                           widget.products[0].coordinates[1]),
-                      zoom: 1.0),
+                      zoom: 5.0),
                   onMapCreated: (GoogleMapController controller) {
                     _mapController = controller;
                     _initializeMarkers();
@@ -137,7 +137,7 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
                 scale: Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
                     parent: _markerAnimationController, curve: Curves.ease)),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: Dimens.dm4),
+                  padding: const EdgeInsets.only(top: Dimens.dm10),
                   child: InkWell(
                     onTap: () {
                       _markerAnimationController.reverse().then((_) {
@@ -171,8 +171,8 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
                                   CustomizableNetworkImage(
                                       imgUrl: _selectedProduct!.imageUrl,
                                       placeholderImgPath: Pngs.asgardLogo,
-                                      imgWidth: Dimens.dm60,
-                                      imgHeight: Dimens.dm60,
+                                      imgWidth: Dimens.dm50,
+                                      imgHeight: Dimens.dm50,
                                       boxFit: BoxFit.cover,
                                       imgFadeInDuration: 200,
                                       imgFadeOutDuration: 100,
@@ -204,7 +204,7 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
                                     style: textStyles(context).asgardTextStyle3,
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
-                                    overflow: TextOverflow.clip))
+                                    overflow: TextOverflow.ellipsis))
                           ],
                         ),
                       ),

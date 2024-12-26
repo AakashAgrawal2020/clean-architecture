@@ -125,9 +125,11 @@ class DioClient implements NetworkServices {
   }
 
   @override
-  Future<dynamic> getAPI(String path, {bool useDebounce = false}) async {
+  Future<dynamic> getAPI(String path,
+      {Map<String, dynamic>? queryParams, bool useDebounce = false}) async {
     return await _requestWithOptionalDebounce(
-        (cancelToken) => _dio.get(path, cancelToken: cancelToken),
+        (cancelToken) => _dio.get(path,
+            queryParameters: queryParams, cancelToken: cancelToken),
         useDebounce: useDebounce);
   }
 

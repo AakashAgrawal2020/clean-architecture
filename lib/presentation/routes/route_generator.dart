@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    Map args = (settings.arguments ?? {}) as Map;
     switch (settings.name) {
       case Routes.splashScreen:
         return PageRouteBuilder(
@@ -16,6 +17,12 @@ class RouteGenerator {
             pageBuilder: (context, animation, secondaryAnimation) =>
                 const ProductListingScreen());
 
+      case Routes.directionScreen:
+        return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                DirectionsScreen(
+                    product: args['product'],
+                    currentLocation: args['currentLocation']));
       default:
         return PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>

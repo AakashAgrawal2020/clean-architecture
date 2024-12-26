@@ -24,6 +24,8 @@ class Strings {
   static String somethingWentWrongOnProductsMessage =
       'Yikes! Looks like a glitch in the matrix—try again for awesome products!';
 
+
+  static String identifyingRoute = 'Identifying Route...';
   static String tryAgain = 'Try again';
   static String tapToUnveilMap = 'Tap to Unveil the Products Exact Location on the Map!';
 

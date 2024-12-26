@@ -19,13 +19,11 @@ class CircularLoader extends StatefulWidget {
 class _CircularLoaderState extends State<CircularLoader> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: widget.width,
-        height: widget.height,
-        child: Padding(
-          padding: const EdgeInsets.all(Dimens.dm4),
-          child: CircularProgressIndicator(
-              color: widget.color, strokeWidth: Dimens.dm3),
-        ));
+    return Center(
+        child: SizedBox(
+            width: widget.width,
+            height: widget.height,
+            child: CircularProgressIndicator(
+                color: widget.color, strokeWidth: Dimens.dm3)));
   }
 }

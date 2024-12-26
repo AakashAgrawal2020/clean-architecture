@@ -6,27 +6,21 @@ import 'package:clean_architecture/core/helpers/pngs.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/permissions_util.dart';
+import 'package:clean_architecture/data/model/product/product_model.dart';
+import 'package:clean_architecture/presentation/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class ProductCard extends StatefulWidget {
-  final String image;
-  final String title;
-  final String description;
-  final double latitude;
-  final double longitude;
   final Position? currentLocation;
+  final ProductModel product;
   final AnimationController animationController;
 
   const ProductCard(
       {super.key,
-      required this.image,
-      required this.title,
-      required this.description,
-      required this.latitude,
-      required this.longitude,
-      required this.animationController,
-      this.currentLocation});
+      this.currentLocation,
+      required this.product,
+      required this.animationController});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -69,7 +63,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
             child: Column(
               children: [
                 CustomizableNetworkImage(
-                    imgUrl: widget.image,
+                    imgUrl: widget.product.imageUrl,
                     placeholderImgPath: Pngs.asgardLogo,
                     imgWidth: context.contextWidth - 42,
                     imgHeight: Dimens.dm200,
@@ -84,14 +78,14 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: Dimens.dm10, horizontal: Dimens.dm16),
-                    child: Text(widget.title,
+                    child: Text(widget.product.title,
                         style: textStyles(context).asgardTextStyle2,
                         textAlign: TextAlign.center)),
                 const Divider(height: 2, color: Colours.ng100),
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: Dimens.dm10, horizontal: Dimens.dm16),
-                    child: Text(widget.description,
+                    child: Text(widget.product.body,
                         style: textStyles(context).asgardTextStyle3,
                         textAlign: TextAlign.center)),
                 Row(
@@ -109,9 +103,8 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                           ? Padding(
                               padding: const EdgeInsets.only(left: Dimens.dm4),
                               child: Text(
-                                  '${distanceInKms(currentLocation!.latitude, currentLocation!.longitude, widget.latitude, widget.longitude)} Kms',
-                                  style: textStyles(context).asgardTextStyle2),
-                            )
+                                  '${distanceInKms(currentLocation!.latitude, currentLocation!.longitude, widget.product.coordinates[0], widget.product.coordinates[1])} Kms',
+                                  style: textStyles(context).asgardTextStyle2))
                           : IconButton(
                               onPressed: () async {
                                 requestLocationPermission(openSettings: true);
@@ -120,8 +113,15 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                     ]),
                     Padding(
                       padding: const EdgeInsets.all(Dimens.dm16),
-                      child:
-                          PrimaryButton(text: 'View Directions', onTap: () {}),
+                      child: PrimaryButton(
+                          text: 'View Directions',
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(Routes.directionScreen, arguments: {
+                              'product': widget.product,
+                              'currentLocation': widget.currentLocation
+                            });
+                          }),
                     ),
                   ],
                 ),
