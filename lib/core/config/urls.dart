@@ -5,6 +5,6 @@ class Urls {
   static String googleMapDirectionUrl =
       'https://maps.googleapis.com/maps/api/directions/json?';
 
-//   static String productListRemotePath =
-//       'v1/e5bd0792-c9a0-4c05-8d25-75ac4ba60b8c';
+  static String googleMapGeocodeUrl =
+      'https://maps.googleapis.com/maps/api/geocode/json?';
 }

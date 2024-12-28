@@ -10,13 +10,31 @@ class MapRepositoryImpl extends MapRepository {
   MapRepositoryImpl({required this.networkServices});
 
   @override
-  Future<List<LatLng>> fetchDirections(Map<String, dynamic> queryParams) async {
+  Future<List<LatLng>> fetchDirections(
+      {required Map<String, dynamic> queryParams}) async {
     try {
       final response = await networkServices.getAPI(
           path: Urls.googleMapDirectionUrl, queryParams: queryParams);
       if (response != null) {
         return MapsUtil.decodePolyline(
             response['routes'][0]['overview_polyline']['points']);
+      } else {
+        throw Exception('Unexpected response format');
+      }
+    } catch (e) {
+      print(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> getPlaceName(
+      {required Map<String, dynamic> queryParams}) async {
+    try {
+      final response = await networkServices.getAPI(
+          path: Urls.googleMapGeocodeUrl, queryParams: queryParams);
+      if (response != null) {
+        return response['results'][0]['formatted_address'];
       } else {
         throw Exception('Unexpected response format');
       }

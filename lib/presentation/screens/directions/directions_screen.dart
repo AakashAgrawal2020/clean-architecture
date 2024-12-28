@@ -75,6 +75,10 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                   GoogleMap(
                       mapType: MapType.terrain,
                       markers: state.markers,
+                      myLocationEnabled: true,
+                      zoomGesturesEnabled: true,
+                      buildingsEnabled: true,
+                      trafficEnabled: true,
                       initialCameraPosition:
                           CameraPosition(target: _source, zoom: Dimens.dm10),
                       polylines: {
@@ -92,10 +96,12 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                               googleMapController: _googleMapController!);
                         }
                       }),
-                  state.apiStatus == ApiStatus.loading
+                  state.directionsApiStatus == ApiStatus.loading &&
+                          state.polylinePoints.isEmpty
                       ? const DirectionsLoading()
                       : const SizedBox.shrink(),
-                  state.apiStatus == ApiStatus.error
+                  state.directionsApiStatus == ApiStatus.error &&
+                          state.polylinePoints.isEmpty
                       ? const DirectionsError()
                       : const SizedBox.shrink()
                 ])),

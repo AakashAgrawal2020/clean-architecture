@@ -26,6 +26,8 @@ class Strings {
 
   static String identifyingRoute = 'Identifying route...';
   static String identifyingRouteError = 'Unable to identify route';
+  static String identifyingLocationsNameError =
+      'Lost in Translation: Unable to Identify location addresses';
   static String tryAgain = 'Try again';
   static String tapToUnveilMap = 'Tap to Unveil the Products Exact Location on the Map!';
 

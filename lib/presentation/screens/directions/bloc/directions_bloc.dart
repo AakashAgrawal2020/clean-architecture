@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clean_architecture/core/config/secrets.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
-import 'package:clean_architecture/core/utils/maps_util.dart';
 import 'package:clean_architecture/domain/repositories/map/map_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -22,25 +21,27 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
 
   void _onFetchDirectionsEvent(
       FetchDirectionsEvent event, Emitter<DirectionsState> emit) async {
-    final queryParam = {
+    final queryParams = {
       'origin': '${event.source.latitude},${event.source.longitude}',
       'destination': '${event.dest.latitude},${event.dest.longitude}',
       'key': Secrets.GOOGLE_MAP_API_KEY
     };
 
     try {
-      emit(state.copyWith(apiStatus: ApiStatus.loading));
-      final polylinePoints = await mapRepository.fetchDirections(queryParam);
+      emit(state.copyWith(directionsApiStatus: ApiStatus.loading));
+      final polylinePoints =
+          await mapRepository.fetchDirections(queryParams: queryParams);
       emit(state.copyWith(
-          polylinePoints: polylinePoints, apiStatus: ApiStatus.completed));
+          polylinePoints: polylinePoints,
+          directionsApiStatus: ApiStatus.completed));
     } catch (error) {
       if (error is DioException &&
           error.type == DioExceptionType.connectionError) {
         emit(state.copyWith(
-            apiStatus: ApiStatus.noInternet,
+            directionsApiStatus: ApiStatus.noInternet,
             message: 'No Internet Connection'));
       } else {
-        emit(state.copyWith(apiStatus: ApiStatus.error));
+        emit(state.copyWith(directionsApiStatus: ApiStatus.error));
       }
     }
   }
@@ -49,17 +50,21 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
   void _onFetchLocationNamesEvent(
       FetchLocationNamesEvent event, Emitter<DirectionsState> emit) async {
     try {
-      emit(state.copyWith(futureStatus: FutureStatus.loading));
-      String sourceName = await MapsUtil.getPlaceName(
-          latitude: event.source.latitude, longitude: event.source.longitude);
-      String destName = await MapsUtil.getPlaceName(
-          latitude: event.dest.latitude, longitude: event.dest.longitude);
+      emit(state.copyWith(geocodeApiStatus: ApiStatus.loading));
+      String sourceName = await mapRepository.getPlaceName(queryParams: {
+        'latlng': '${event.source.latitude},${event.source.longitude}',
+        'key': Secrets.GOOGLE_MAP_API_KEY
+      });
+      String destName = await mapRepository.getPlaceName(queryParams: {
+        'latlng': '${event.dest.latitude},${event.dest.longitude}',
+        'key': Secrets.GOOGLE_MAP_API_KEY
+      });
       emit(state.copyWith(
           sourceName: sourceName,
           destName: destName,
-          futureStatus: FutureStatus.completed));
+          geocodeApiStatus: ApiStatus.completed));
     } catch (error) {
-      emit(state.copyWith(futureStatus: FutureStatus.error));
+      emit(state.copyWith(geocodeApiStatus: ApiStatus.error));
     }
   }
 
@@ -68,23 +73,22 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
   void _onSetMarkersEvent(
       SetMarkersEvent event, Emitter<DirectionsState> emit) async {
     try {
-      emit(state.copyWith(futureStatus: FutureStatus.loading));
+      emit(state.copyWith(markers: {}));
       Set<Marker> markers = {
         Marker(
             markerId: const MarkerId('source'),
             position: event.source,
             icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueViolet)),
+                BitmapDescriptor.hueAzure)),
         Marker(
             markerId: const MarkerId('dest'),
             position: event.dest,
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueViolet))
       };
-      emit(state.copyWith(
-          markers: markers, futureStatus: FutureStatus.completed));
+      emit(state.copyWith(markers: markers));
     } catch (error) {
-      emit(state.copyWith(futureStatus: FutureStatus.error));
+      emit(state.copyWith(markers: {}));
     }
   }
 }

@@ -27,8 +27,8 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
         ]),
       child: BlocBuilder<DirectionsBloc, DirectionsState>(
           builder: (context, state) {
-        if (state.futureStatus == FutureStatus.initial ||
-            state.futureStatus == FutureStatus.loading) {
+        if (state.geocodeApiStatus == ApiStatus.initial ||
+            state.geocodeApiStatus == ApiStatus.loading) {
           return Padding(
               padding: const EdgeInsets.symmetric(vertical: Dimens.dm32),
               child: Row(children: [
@@ -45,24 +45,24 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
                 Expanded(
                     child: Container(height: Dimens.dm1, color: Colours.ng100))
               ]));
-        } else if (state.futureStatus == FutureStatus.completed) {
+        } else if (state.geocodeApiStatus == ApiStatus.completed) {
           return Column(children: [
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(Icons.location_on_rounded,
-                              color: Colours.purple, size: Dimens.dm24),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: Dimens.dm10),
-                              child: Text(state.sourceName,
-                                  style: textStyles(context).asgardTextStyle2,
-                                  textAlign: TextAlign.center)))
-                    ])),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  const Icon(Icons.location_on_rounded,
+                      color: Colours.blue, size: Dimens.dm24),
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimens.dm10),
+                          child: Text(state.sourceName,
+                              style: textStyles(context).asgardTextStyle2,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center)))
+                ])),
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: Dimens.dm10),
                 child: Row(children: [
@@ -80,23 +80,37 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
                         left: Dimens.dm20,
                         right: Dimens.dm20,
                         bottom: Dimens.dm10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(Icons.location_on_rounded,
-                              color: Colours.red, size: Dimens.dm24),
-                          Expanded(
-                              child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: Dimens.dm10),
-                              child: Text(state.destName,
-                                  style: textStyles(context).asgardTextStyle2,
-                                  textAlign: TextAlign.center)))
-                    ]))
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  const Icon(Icons.location_on_rounded,
+                      color: Colours.purple, size: Dimens.dm24),
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimens.dm10),
+                          child: Text(state.destName,
+                              style: textStyles(context).asgardTextStyle2,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center)))
+                ]))
           ]);
         } else {
-          return Text(Strings.tryAgain);
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: Dimens.dm10, horizontal: Dimens.dm20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.error, size: Dimens.dm24, color: Colours.red),
+                Expanded(
+                    child: Text(Strings.identifyingLocationsNameError,
+                        textAlign: TextAlign.center,
+                        style: textStyles(context).asgardTextStyle3))
+              ],
+            ),
+          );
         }
       }),
     );

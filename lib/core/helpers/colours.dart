@@ -9,6 +9,7 @@ class Colours {
   static const Color purple = Color(0xFF750C94);
   static const Color purple1 = Color(0xFFE8D5ED);
   static const Color red = Color(0xFFD31111);
+  static const Color blue = Color(0xFF275ED8);
 
   static const Color grey1 = Color(0xFF2C302B);
   static const Color grey2 = Color(0xFFF1F3F0);

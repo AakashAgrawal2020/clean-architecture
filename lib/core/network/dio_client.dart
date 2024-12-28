@@ -10,7 +10,6 @@ class DioClient implements NetworkServices {
   late final Dio _dio;
   final int _maxRetryAttempts = 3;
   Timer? _debounceTimer;
-  CancelToken? _activeCancelToken;
 
   DioClient._internal() {
     _dio = Dio(BaseOptions(
@@ -35,12 +34,11 @@ class DioClient implements NetworkServices {
       }
       return handler.next(options);
     }, onResponse: (response, handler) {
-        return handler.next(response);
-      },
-      onError: (DioException exception, handler) async {
-        if (_shouldRetry(exception)) {
-          await _retryRequest(exception, handler);
-        } else {
+      return handler.next(response);
+    }, onError: (DioException exception, handler) async {
+      if (_shouldRetry(exception)) {
+        await _retryRequest(exception, handler);
+      } else {
         final mappedException = _mapException(exception);
         return handler.reject(mappedException);
       }
@@ -57,8 +55,8 @@ class DioClient implements NetworkServices {
         exception.type == DioExceptionType.receiveTimeout;
   }
 
-  Future<void> _retryRequest(DioException exception,
-      ErrorInterceptorHandler handler,) async {
+  Future<void> _retryRequest(
+      DioException exception, ErrorInterceptorHandler handler) async {
     final requestOptions = exception.requestOptions;
     int retryCount = requestOptions.extra['retryCount'] ?? 0;
 
@@ -84,21 +82,19 @@ class DioClient implements NetworkServices {
   }
 
   Future<dynamic> _requestWithOptionalDebounce(
-    Future<Response<dynamic>> Function(CancelToken cancelToken) request, {
-    bool useDebounce = false,
-  }) async {
-    _activeCancelToken?.cancel();
-    _debounceTimer?.cancel();
-    _activeCancelToken = CancelToken();
+      Future<Response<dynamic>> Function(CancelToken cancelToken) request,
+      {bool useDebounce = false}) async {
+    final cancelToken = CancelToken();
 
     if (!useDebounce) {
-      return await _executeRequest(request, _activeCancelToken!);
+      return await _executeRequest(request, cancelToken);
     }
 
     Completer<dynamic> completer = Completer();
+    _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
       try {
-        final response = await request(_activeCancelToken!);
+        final response = await request(cancelToken);
         completer.complete(response.data);
       } on DioException catch (e) {
         completer.completeError(_mapException(e));
@@ -112,8 +108,7 @@ class DioClient implements NetworkServices {
 
   Future<dynamic> _executeRequest(
       Future<Response<dynamic>> Function(CancelToken) request,
-    CancelToken cancelToken,
-  ) async {
+      CancelToken cancelToken) async {
     try {
       final response = await request(cancelToken);
       return response.data;
@@ -133,7 +128,8 @@ class DioClient implements NetworkServices {
     return await _requestWithOptionalDebounce(
         (cancelToken) => _dio.get(path,
             options: Options(headers: headers),
-            queryParameters: queryParams, cancelToken: cancelToken),
+            queryParameters: queryParams,
+            cancelToken: cancelToken),
         useDebounce: useDebounce);
   }
 

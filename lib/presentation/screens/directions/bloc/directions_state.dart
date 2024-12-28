@@ -6,8 +6,8 @@ class DirectionsState extends Equatable {
   final Set<Marker> markers;
   final List<LatLng> polylinePoints;
   final String message;
-  final ApiStatus apiStatus;
-  final FutureStatus futureStatus;
+  final ApiStatus directionsApiStatus;
+  final ApiStatus geocodeApiStatus;
 
   const DirectionsState(
       {this.sourceName = '',
@@ -15,8 +15,8 @@ class DirectionsState extends Equatable {
       this.markers = const {},
       this.polylinePoints = const [],
       this.message = '',
-      this.apiStatus = ApiStatus.initial,
-      this.futureStatus = FutureStatus.initial});
+      this.directionsApiStatus = ApiStatus.initial,
+      this.geocodeApiStatus = ApiStatus.initial});
 
   @override
   List<Object> get props => [
@@ -25,8 +25,8 @@ class DirectionsState extends Equatable {
         markers,
         polylinePoints,
         message,
-        apiStatus,
-        futureStatus
+        directionsApiStatus,
+        geocodeApiStatus
       ];
 
   DirectionsState copyWith(
@@ -35,15 +35,15 @@ class DirectionsState extends Equatable {
       String? destName,
       Set<Marker>? markers,
       String? message,
-      ApiStatus? apiStatus,
-      FutureStatus? futureStatus}) {
+      ApiStatus? directionsApiStatus,
+      ApiStatus? geocodeApiStatus}) {
     return DirectionsState(
         sourceName: sourceName ?? this.sourceName,
         destName: destName ?? this.destName,
         markers: markers ?? this.markers,
         polylinePoints: polylinePoints ?? this.polylinePoints,
         message: message ?? this.message,
-        apiStatus: apiStatus ?? this.apiStatus,
-        futureStatus: futureStatus ?? this.futureStatus);
+        geocodeApiStatus: geocodeApiStatus ?? this.geocodeApiStatus,
+        directionsApiStatus: directionsApiStatus ?? this.directionsApiStatus);
   }
 }
