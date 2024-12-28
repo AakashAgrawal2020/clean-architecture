@@ -28,6 +28,12 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> with StyleExtension {
+  late int distance = MapsUtil.distanceInKms(
+      currentLocation!.latitude,
+      currentLocation!.longitude,
+      widget.product.coordinates[0],
+      widget.product.coordinates[1]);
+
   @override
   void initState() {
     super.initState();
@@ -103,8 +109,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                       currentLocation != null
                           ? Padding(
                               padding: const EdgeInsets.only(left: Dimens.dm4),
-                              child: Text(
-                                  '${MapsUtil.distanceInKms(currentLocation!.latitude, currentLocation!.longitude, widget.product.coordinates[0], widget.product.coordinates[1])} Kms',
+                              child: Text('$distance Kms',
                                   style: textStyles(context).asgardTextStyle2))
                           : IconButton(
                               onPressed: () async {
@@ -121,6 +126,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                               Navigator.of(context).pushNamed(
                                   Routes.directionScreen,
                                   arguments: {
+                                    'distance': distance,
                                     'product': widget.product,
                                     'currentLocation': widget.currentLocation
                                   });

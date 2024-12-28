@@ -17,9 +17,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class DirectionsScreen extends StatefulWidget {
   final ProductModel product;
   final Position currentLocation;
+  final int distance;
 
-  const DirectionsScreen(
-      {super.key, required this.product, required this.currentLocation});
+  const DirectionsScreen({super.key,
+    required this.product,
+    required this.currentLocation,
+    required this.distance});
 
   @override
   State<DirectionsScreen> createState() => _DirectionsScreenState();
@@ -110,16 +113,27 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                               googleMapController: _googleMapController!);
                         }
                       }),
-                  state.directionsApiStatus == ApiStatus.loading &&
-                          state.polylinePoints.isEmpty
-                      ? const DirectionsLoading()
-                      : const SizedBox.shrink(),
-                  state.directionsApiStatus == ApiStatus.error &&
-                          state.polylinePoints.isEmpty
-                      ? const DirectionsError()
-                      : const SizedBox.shrink()
+                  AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      child: state.directionsApiStatus == ApiStatus.loading ||
+                              state.directionsApiStatus == ApiStatus.initial
+                          ? const DirectionsLoading()
+                          : const SizedBox.shrink()),
+                  AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      child: state.directionsApiStatus == ApiStatus.error
+                          ? const DirectionsError()
+                          : const SizedBox.shrink()),
                 ])),
-                const SourceDestNames()
+                SourceDestNames(distance: widget.distance)
               ]);
             },
           ),

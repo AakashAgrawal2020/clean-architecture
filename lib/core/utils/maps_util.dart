@@ -92,7 +92,7 @@ class MapsUtil {
       await googleMapController.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(
               target: LatLng(product.coordinates[0], product.coordinates[1]),
-              zoom: 4.0)));
+              zoom: 10.0)));
     }
   }
 

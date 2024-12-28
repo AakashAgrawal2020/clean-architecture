@@ -24,6 +24,7 @@ class RouteGenerator {
             pageBuilder: (context, animation, secondaryAnimation) =>
                 DirectionsScreen(
                     product: args['product'],
+                    distance: args['distance'],
                     currentLocation: args['currentLocation']),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {

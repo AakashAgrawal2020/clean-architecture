@@ -106,7 +106,8 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
             ClipRRect(
                 borderRadius: BorderRadius.circular(Dimens.dm20),
                 child: GoogleMap(
-                  myLocationButtonEnabled: false,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
                   mapType: MapType.terrain,
                   markers: _markers,
                   initialCameraPosition: CameraPosition(
