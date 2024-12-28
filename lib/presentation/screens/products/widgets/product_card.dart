@@ -111,17 +111,20 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                               },
                               icon: const Icon(Icons.map_outlined))
                     ]),
-                    Padding(
-                      padding: const EdgeInsets.all(Dimens.dm16),
-                      child: PrimaryButton(
-                          text: 'View Directions',
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(Routes.directionScreen, arguments: {
-                              'product': widget.product,
-                              'currentLocation': widget.currentLocation
-                            });
-                          }),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(Dimens.dm16),
+                        child: PrimaryButton(
+                            text: 'View Directions',
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  Routes.directionScreen,
+                                  arguments: {
+                                    'product': widget.product,
+                                    'currentLocation': widget.currentLocation
+                                  });
+                            }),
+                      ),
                     ),
                   ],
                 ),

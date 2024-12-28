@@ -6,6 +6,7 @@ import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/helpers/textstyles.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
+import 'package:clean_architecture/core/utils/maps_util.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -57,7 +58,9 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
               widget.products[i].coordinates[1]),
           icon: _customIcon ?? BitmapDescriptor.defaultMarker,
           onTap: () {
-            _animateCameraOnMarkerTap(widget.products[i]).whenComplete(() {
+            MapsUtil.animateCameraOnMarkerTap(
+                    widget.products[i], _mapController)
+                .whenComplete(() {
               if (_selectedProduct == widget.products[i]) {
                 _markerAnimationController.reverse().then((_) {
                   setState(() {
@@ -74,15 +77,6 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
           }));
     }
     setState(() {});
-  }
-
-  Future<void> _animateCameraOnMarkerTap(ProductModel product) async {
-    if (_mapController != null) {
-      await _mapController!.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(product.coordinates[0], product.coordinates[1]),
-              zoom: 4.0)));
-    }
   }
 
   @override

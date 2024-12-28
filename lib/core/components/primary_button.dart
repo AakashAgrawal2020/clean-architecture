@@ -63,8 +63,8 @@ class _PrimaryButtonState extends State<PrimaryButton> with StyleExtension {
             ? Text(widget.text,
                 style: TextStyles.textStyle1, textAlign: TextAlign.center)
             : const CircularLoader(
-                height: Dimens.dm25, width: Dimens.dm25, color: Colours.white),
-      ),
-    );
+                    height: Dimens.dm25,
+                    width: Dimens.dm25,
+                    color: Colours.white)));
   }
 }

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:clean_architecture/core/helpers/colours.dart';
+import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -95,5 +96,15 @@ class MapsUtil {
       points.add(LatLng(lat / 1E5, lng / 1E5));
     }
     return points;
+  }
+
+  static Future<void> animateCameraOnMarkerTap(
+      ProductModel product, GoogleMapController? googleMapController) async {
+    if (googleMapController != null) {
+      await googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(product.coordinates[0], product.coordinates[1]),
+              zoom: 4.0)));
+    }
   }
 }

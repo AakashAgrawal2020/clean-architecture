@@ -9,7 +9,8 @@ class LoginRepositoryDio implements LoginRepository {
 
   @override
   Future<UserModel> userLogin(dynamic data) async {
-    dynamic response = await networkServices.postAPI('api/login', data);
+    dynamic response =
+        await networkServices.postAPI(path: 'api/login', data: data);
     return UserModel.fromJson(response);
   }
 }

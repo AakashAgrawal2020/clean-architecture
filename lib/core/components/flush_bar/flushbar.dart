@@ -778,7 +778,7 @@ enum FlushbarPosition { top, bottom }
 /// Indicates if flushbar will be attached to the edge of the screen or not
 enum FlushbarStyle { floating, grounded }
 
-/// Indicates the direction in which it is possible to dismiss
+/// Indicates the map in which it is possible to dismiss
 /// If vertical, dismiss up will be allowed if [FlushbarPosition.top]
 /// If vertical, dismiss down will be allowed if [FlushbarPosition.bottom]
 enum FlushbarDismissDirection { horizontal, vertical }
