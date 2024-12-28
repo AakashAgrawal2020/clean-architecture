@@ -11,18 +11,18 @@ import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class GoogleMapAsgard extends StatefulWidget {
+class GoogleMapProducts extends StatefulWidget {
   final List<ProductModel> products;
   final AnimationController animationController;
 
-  const GoogleMapAsgard(
+  const GoogleMapProducts(
       {super.key, required this.products, required this.animationController});
 
   @override
-  State<GoogleMapAsgard> createState() => _GoogleMapAsgardState();
+  State<GoogleMapProducts> createState() => _GoogleMapProductsState();
 }
 
-class _GoogleMapAsgardState extends State<GoogleMapAsgard>
+class _GoogleMapProductsState extends State<GoogleMapProducts>
     with StyleExtension, SingleTickerProviderStateMixin {
   final Set<Marker> _markers = {};
   BitmapDescriptor? _customIcon;

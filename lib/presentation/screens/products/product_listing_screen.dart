@@ -11,7 +11,7 @@ import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/products/bloc/products_bloc.dart';
-import 'package:clean_architecture/presentation/screens/products/widgets/google_map_asgard.dart';
+import 'package:clean_architecture/presentation/screens/products/widgets/google_map_products.dart';
 import 'package:clean_architecture/presentation/screens/products/widgets/page_loading.dart';
 import 'package:clean_architecture/presentation/screens/products/widgets/product_card.dart';
 import 'package:clean_architecture/presentation/screens/products/widgets/zero_products.dart';
@@ -133,7 +133,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                     child: CustomScrollView(
                       slivers: [
                         SliverToBoxAdapter(
-                            child: GoogleMapAsgard(
+                            child: GoogleMapProducts(
                                 products: state.products,
                                 animationController:
                                     _googleMapAnimationController)),

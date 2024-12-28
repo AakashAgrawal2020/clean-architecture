@@ -48,12 +48,12 @@ class _PrimaryButtonState extends State<PrimaryButton> with StyleExtension {
         padding: const EdgeInsets.symmetric(
             horizontal: Dimens.dm16, vertical: Dimens.dm10),
         decoration: BoxDecoration(
-            color: Colours.purple,
-            borderRadius: BorderRadius.circular(Dimens.dm10),
+                color: Colours.purple3,
+                borderRadius: BorderRadius.circular(Dimens.dm10),
             boxShadow: !_isButtonTapped
                 ? [
                     BoxShadow(
-                        color: colours(context).shadowColor2,
+                            color: colours(context).shadowColor2,
                         spreadRadius: Dimens.dm1,
                         blurRadius: Dimens.dm10,
                         offset: const Offset(Dimens.dm0, Dimens.dm4))

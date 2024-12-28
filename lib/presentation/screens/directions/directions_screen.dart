@@ -43,13 +43,25 @@ class _DirectionsScreenState extends State<DirectionsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: colours(context).backgroundColor,
-        appBar: AppBar(
-            title: Text('Directions for ${widget.product.title}',
-                style: textStyles(context).asgardTextStyle2),
-            backgroundColor: colours(context).backgroundColor,
-            surfaceTintColor: colours(context).backgroundColor,
-            elevation: Dimens.dm5,
-            shadowColor: Colours.black.withOpacity(0.5)),
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(Dimens.dm60),
+            child: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colours.purple, Colours.purple1],
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(Dimens.dm16),
+                        bottomRight: Radius.circular(Dimens.dm16))),
+                child: AppBar(
+                    backgroundColor: Colors.transparent,
+                    surfaceTintColor: Colours.white,
+                    shadowColor: Colours.black.withOpacity(0.5),
+                    title: Text('Directions for ${widget.product.title}',
+                        style: textStyles(context).asgardTextStyle2),
+                    centerTitle: true,
+                    elevation: 5))),
         body: BlocProvider(
           create: (context) {
             final bloc = DirectionsBloc(mapRepository: getIt());
@@ -75,7 +87,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                 Expanded(
                     child: Stack(children: [
                   GoogleMap(
-                      mapType: MapType.terrain,
+                      mapType: MapType.normal,
                       markers: state.markers,
                       myLocationEnabled: true,
                       zoomGesturesEnabled: true,
