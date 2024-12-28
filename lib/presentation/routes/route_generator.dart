@@ -19,10 +19,22 @@ class RouteGenerator {
 
       case Routes.directionScreen:
         return PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 700),
+            reverseTransitionDuration: const Duration(milliseconds: 700),
             pageBuilder: (context, animation, secondaryAnimation) =>
                 DirectionsScreen(
                     product: args['product'],
-                    currentLocation: args['currentLocation']));
+                    currentLocation: args['currentLocation']),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              var begin = const Offset(1.0, 0.0);
+              var end = Offset.zero;
+              var tween = Tween(begin: begin, end: end)
+                  .chain(CurveTween(curve: Curves.ease));
+              return SlideTransition(
+                  position: animation.drive(tween), child: child);
+            });
+
       default:
         return PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
