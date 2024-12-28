@@ -5,6 +5,7 @@ import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
+import 'package:clean_architecture/core/utils/maps_util.dart';
 import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/presentation/routes/routes.dart';
@@ -103,7 +104,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                           ? Padding(
                               padding: const EdgeInsets.only(left: Dimens.dm4),
                               child: Text(
-                                  '${distanceInKms(currentLocation!.latitude, currentLocation!.longitude, widget.product.coordinates[0], widget.product.coordinates[1])} Kms',
+                                  '${MapsUtil.distanceInKms(currentLocation!.latitude, currentLocation!.longitude, widget.product.coordinates[0], widget.product.coordinates[1])} Kms',
                                   style: textStyles(context).asgardTextStyle2))
                           : IconButton(
                               onPressed: () async {

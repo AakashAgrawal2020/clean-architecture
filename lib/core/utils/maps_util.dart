@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsUtil {
@@ -28,18 +28,6 @@ class MapsUtil {
 
     return BitmapDescriptor.bytes(
         (await img.toByteData(format: ImageByteFormat.png)) as Uint8List);
-  }
-
-  static Future<String> getPlaceName(
-      {required double latitude, required double longitude}) async {
-    try {
-      List<Placemark> placeMarks =
-          await placemarkFromCoordinates(latitude, longitude);
-      Placemark place = placeMarks[0];
-      return '${place.name}, ${place.locality}, ${place.country}';
-    } catch (e) {
-      return 'Unable to fetch location name';
-    }
   }
 
   static void fitMarkersInView(
@@ -106,5 +94,11 @@ class MapsUtil {
               target: LatLng(product.coordinates[0], product.coordinates[1]),
               zoom: 4.0)));
     }
+  }
+
+  static int distanceInKms(startLat, startLong, endLat, endLong) {
+    double distanceInMeters =
+        Geolocator.distanceBetween(startLat, startLong, endLat, endLong);
+    return (distanceInMeters / 1000).round();
   }
 }

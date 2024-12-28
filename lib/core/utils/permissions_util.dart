@@ -29,9 +29,3 @@ Future<Position?> requestLocationPermission({bool openSettings = false}) async {
 
   return currentLocation;
 }
-
-int distanceInKms(startLat, startLong, endLat, endLong) {
-  double distanceInMeters =
-      Geolocator.distanceBetween(startLat, startLong, endLat, endLong);
-  return (distanceInMeters / 1000).round();
-}
