@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:clean_architecture/core/config/secrets.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
+import 'package:clean_architecture/core/utils/maps_util.dart';
 import 'package:clean_architecture/domain/repositories/map/map_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -14,10 +15,12 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
 
   DirectionsBloc({required this.mapRepository})
       : super(const DirectionsState()) {
-    on<FetchDirectionsEvent>(_onFetchProductsEvent);
+    on<FetchDirectionsEvent>(_onFetchDirectionsEvent);
+    on<FetchLocationNamesEvent>(_onFetchLocationNamesEvent);
+    on<SetMarkersEvent>(_onSetMarkersEvent);
   }
 
-  void _onFetchProductsEvent(
+  void _onFetchDirectionsEvent(
       FetchDirectionsEvent event, Emitter<DirectionsState> emit) async {
     final queryParam = {
       'origin': '${event.source.latitude},${event.source.longitude}',
@@ -26,18 +29,62 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
     };
 
     try {
-      emit(state.copyWith(status: ApiStatus.loading));
+      emit(state.copyWith(apiStatus: ApiStatus.loading));
       final polylinePoints = await mapRepository.fetchDirections(queryParam);
       emit(state.copyWith(
-          polylinePoints: polylinePoints, status: ApiStatus.completed));
+          polylinePoints: polylinePoints, apiStatus: ApiStatus.completed));
     } catch (error) {
       if (error is DioException &&
           error.type == DioExceptionType.connectionError) {
         emit(state.copyWith(
-            status: ApiStatus.noInternet, message: 'No Internet Connection'));
+            apiStatus: ApiStatus.noInternet,
+            message: 'No Internet Connection'));
       } else {
-        emit(state.copyWith(status: ApiStatus.error));
+        emit(state.copyWith(apiStatus: ApiStatus.error));
       }
+    }
+  }
+
+
+  void _onFetchLocationNamesEvent(
+      FetchLocationNamesEvent event, Emitter<DirectionsState> emit) async {
+    try {
+      emit(state.copyWith(futureStatus: FutureStatus.loading));
+      String sourceName = await MapsUtil.getPlaceName(
+          latitude: event.source.latitude, longitude: event.source.longitude);
+      String destName = await MapsUtil.getPlaceName(
+          latitude: event.dest.latitude, longitude: event.dest.longitude);
+      emit(state.copyWith(
+          sourceName: sourceName,
+          destName: destName,
+          futureStatus: FutureStatus.completed));
+    } catch (error) {
+      emit(state.copyWith(futureStatus: FutureStatus.error));
+    }
+  }
+
+
+
+  void _onSetMarkersEvent(
+      SetMarkersEvent event, Emitter<DirectionsState> emit) async {
+    try {
+      emit(state.copyWith(futureStatus: FutureStatus.loading));
+      Set<Marker> markers = {
+        Marker(
+            markerId: const MarkerId('source'),
+            position: event.source,
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueViolet)),
+        Marker(
+            markerId: const MarkerId('dest'),
+            position: event.dest,
+            icon:
+                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)),
+      };
+      emit(state.copyWith(
+          markers: markers, futureStatus: FutureStatus.completed));
+    } catch (error) {
+      emit(state.copyWith(futureStatus: FutureStatus.error));
     }
   }
 }

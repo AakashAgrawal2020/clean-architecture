@@ -90,8 +90,8 @@ class MapsUtil {
         result |= (b & 0x1F) << shift;
         shift += 5;
       } while (b >= 0x20);
-      int dlng = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
-      lng += dlng;
+      int dLng = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+      lng += dLng;
 
       points.add(LatLng(lat / 1E5, lng / 1E5));
     }

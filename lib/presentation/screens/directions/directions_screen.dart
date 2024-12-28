@@ -27,51 +27,16 @@ class DirectionsScreen extends StatefulWidget {
 
 class _DirectionsScreenState extends State<DirectionsScreen>
     with StyleExtension {
-  late GoogleMapController _googleMapController;
-  late Set<Polyline> _polyLines;
-  late Set<Marker> _markers;
-  late String _sourceName, _destName;
-  late LatLng _sourceLatLng, _destLatLng;
-  late Map<String, dynamic> _directionsQueryParams;
+  late LatLng _source, _dest;
+  GoogleMapController? _googleMapController;
 
   @override
   void initState() {
     super.initState();
-    _sourceName = '';
-    _destName = '';
-    _polyLines = {};
-    _markers = {};
-    _sourceLatLng = LatLng(
+    _source = LatLng(
         widget.currentLocation.latitude, widget.currentLocation.longitude);
-    _destLatLng =
+    _dest =
         LatLng(widget.product.coordinates[0], widget.product.coordinates[1]);
-    _fetchPlaceNames();
-  }
-
-  Future<void> _fetchPlaceNames() async {
-    String sourceName = await MapsUtil.getPlaceName(
-        latitude: _sourceLatLng.latitude, longitude: _sourceLatLng.longitude);
-    String destinationName = await MapsUtil.getPlaceName(
-        latitude: _destLatLng.latitude, longitude: _destLatLng.longitude);
-
-    setState(() {
-      _sourceName = sourceName;
-      _destName = destinationName;
-      _markers = {
-        Marker(
-            markerId: const MarkerId('source'),
-            position: _sourceLatLng,
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueViolet)),
-        Marker(
-            markerId: const MarkerId('dest'),
-            position: _destLatLng,
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)),
-      };
-    });
-    MapsUtil.fitMarkersInView(
-        markers: _markers, googleMapController: _googleMapController);
   }
 
   @override
@@ -86,19 +51,32 @@ class _DirectionsScreenState extends State<DirectionsScreen>
         body: BlocProvider(
           create: (context) {
             final bloc = DirectionsBloc(mapRepository: getIt());
-            bloc.add(
-                FetchDirectionsEvent(source: _sourceLatLng, dest: _destLatLng));
+            bloc.add(FetchDirectionsEvent(source: _source, dest: _dest));
+            bloc.add(SetMarkersEvent(source: _source, dest: _dest));
+            bloc.add(FetchLocationNamesEvent(source: _source, dest: _dest));
             return bloc;
           },
-          child: Column(children: [
-            Expanded(child: BlocBuilder<DirectionsBloc, DirectionsState>(
-              builder: (context, state) {
-                return Stack(children: [
+          child: BlocConsumer<DirectionsBloc, DirectionsState>(
+            listenWhen: (previous, current) {
+              return previous != current;
+            },
+            listener: (BuildContext context, DirectionsState state) {
+              if (_googleMapController != null && state.markers.isNotEmpty) {
+                MapsUtil.fitMarkersInView(
+                  markers: state.markers,
+                  googleMapController: _googleMapController!,
+                );
+              }
+            },
+            builder: (context, state) {
+              return Column(children: [
+                Expanded(
+                    child: Stack(children: [
                   GoogleMap(
                       mapType: MapType.terrain,
-                      markers: _markers,
-                      initialCameraPosition: CameraPosition(
-                          target: _sourceLatLng, zoom: Dimens.dm10),
+                      markers: state.markers,
+                      initialCameraPosition:
+                          CameraPosition(target: _source, zoom: Dimens.dm10),
                       polylines: {
                         Polyline(
                             polylineId: const PolylineId('route'),
@@ -108,21 +86,23 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                       },
                       onMapCreated: (GoogleMapController controller) {
                         _googleMapController = controller;
-                        MapsUtil.fitMarkersInView(
-                            markers: _markers,
-                            googleMapController: _googleMapController);
+                        if (state.markers.isNotEmpty) {
+                          MapsUtil.fitMarkersInView(
+                              markers: state.markers,
+                              googleMapController: _googleMapController!);
+                        }
                       }),
-                  state.status == ApiStatus.loading
+                  state.apiStatus == ApiStatus.loading
                       ? const DirectionsLoading()
                       : const SizedBox.shrink(),
-                  state.status == ApiStatus.error
+                  state.apiStatus == ApiStatus.error
                       ? const DirectionsError()
                       : const SizedBox.shrink()
-                ]);
-              },
-            )),
-            SourceDestNames(sourceName: _sourceName, destName: _destName)
-          ]),
+                ])),
+                const SourceDestNames()
+              ]);
+            },
+          ),
         ));
   }
 }
