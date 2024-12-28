@@ -1,6 +1,7 @@
 import 'package:clean_architecture/core/components/error.dart';
 import 'package:clean_architecture/core/components/no_internet.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
+import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/utils/animations_util.dart';
@@ -68,11 +69,25 @@ class _ProductListingScreenState extends State<ProductListingScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colours(context).backgroundColor,
-      appBar: AppBar(
-          backgroundColor: colours(context).backgroundColor,
-          surfaceTintColor: colours(context).backgroundColor,
-          title: Text(Strings.productListingScreenHeading,
-              style: textStyles(context).asgardTextStyle2)),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(Dimens.dm60),
+          child: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colours.purple, Colours.purple1],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(Dimens.dm16),
+                      bottomRight: Radius.circular(Dimens.dm16))),
+              child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  surfaceTintColor: Colours.white,
+                  shadowColor: Colours.black.withOpacity(0.5),
+                  title: Text(Strings.productListingScreenHeading,
+                      style: textStyles(context).asgardTextStyle2),
+                  centerTitle: true,
+                  elevation: 5))),
       body: BlocProvider(
         create: (context) =>
             ProductsBloc(productRepository: getIt())..add(FetchProductsEvent()),

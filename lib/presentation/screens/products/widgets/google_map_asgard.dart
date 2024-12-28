@@ -89,7 +89,8 @@ class _GoogleMapAsgardState extends State<GoogleMapAsgard>
         curve: Curves.easeIn,
         height: _mapHeight,
         width: context.contextWidth,
-        margin: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
+        margin: const EdgeInsets.only(
+            left: Dimens.dm20, right: Dimens.dm20, top: Dimens.dm20),
         decoration: BoxDecoration(
             color: colours(context).backgroundColor,
             borderRadius: BorderRadius.circular(Dimens.dm20),

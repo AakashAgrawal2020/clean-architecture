@@ -48,7 +48,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
         opacity:
             widget.animationController.drive(CurveTween(curve: Curves.easeIn)),
         child: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
+          padding: const EdgeInsets.only(top: Dimens.dm20),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
             decoration: BoxDecoration(

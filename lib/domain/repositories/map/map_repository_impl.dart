@@ -22,7 +22,6 @@ class MapRepositoryImpl extends MapRepository {
         throw Exception('Unexpected response format');
       }
     } catch (e) {
-      print(e.toString());
       rethrow;
     }
   }

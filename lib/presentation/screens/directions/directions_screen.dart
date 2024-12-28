@@ -48,7 +48,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                 style: textStyles(context).asgardTextStyle2),
             backgroundColor: colours(context).backgroundColor,
             surfaceTintColor: colours(context).backgroundColor,
-            elevation: 4.0,
+            elevation: Dimens.dm5,
             shadowColor: Colours.black.withOpacity(0.5)),
         body: BlocProvider(
           create: (context) {
