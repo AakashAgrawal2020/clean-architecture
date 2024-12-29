@@ -3,12 +3,12 @@ import 'package:clean_architecture/core/components/primary_button.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
+import 'package:clean_architecture/core/services/product/product_services.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/maps_util.dart';
 import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
-import 'package:clean_architecture/presentation/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -28,12 +28,14 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> with StyleExtension {
-  late int distance;
+  late int _distance;
+  late ProductServices _productServices;
 
   @override
   void initState() {
     super.initState();
-    distance = MapsUtil.distanceInKms(
+    _productServices = ProductServices();
+    _distance = MapsUtil.distanceInKms(
         currentLocation!.latitude,
         currentLocation!.longitude,
         widget.product.coordinates[0],
@@ -110,7 +112,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                       currentLocation != null
                           ? Padding(
                               padding: const EdgeInsets.only(left: Dimens.dm4),
-                              child: Text('$distance Kms',
+                              child: Text('$_distance Kms',
                                   style: textStyles(context).asgardTextStyle4))
                           : IconButton(
                               onPressed: () async {
@@ -124,13 +126,11 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                         child: PrimaryButton(
                             text: 'View Directions',
                             onTap: () {
-                              Navigator.of(context).pushNamed(
-                                  Routes.directionScreen,
-                                  arguments: {
-                                    'distance': distance,
-                                    'product': widget.product,
-                                    'currentLocation': widget.currentLocation
-                                  });
+                                _productServices.redirectToDirectionsScreen(
+                                    context,
+                                    _distance,
+                                    widget.product,
+                                    widget.currentLocation);
                               })),
                     ),
                   ],

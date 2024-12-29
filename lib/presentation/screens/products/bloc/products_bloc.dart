@@ -5,6 +5,7 @@ import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/domain/repositories/product/product_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 part 'products_event.dart';
 part 'products_state.dart';
@@ -13,10 +14,11 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductRepository productRepository;
 
   ProductsBloc({required this.productRepository})
-      : super(const ProductsState(mapHeight: Dimens.dm100)) {
+      : super(const ProductsState()) {
     on<FetchProductsEvent>(_onFetchProductsEvent);
     on<UpdateSelectedProductEvent>(_onUpdateSelectedProductEvent);
     on<ToggleMapHeightEvent>(_onToggleMapHeightEvent);
+    on<SetMarkersEvent>(_onSetMarkersEvent);
   }
 
   void _onFetchProductsEvent(
@@ -49,5 +51,9 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   void _onToggleMapHeightEvent(
       ToggleMapHeightEvent event, Emitter<ProductsState> emit) {
     emit(state.copyWith(mapHeight: event.mapHeight));
+  }
+
+  void _onSetMarkersEvent(SetMarkersEvent event, Emitter<ProductsState> emit) {
+    emit(state.copyWith(markers: event.markers));
   }
 }

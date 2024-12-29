@@ -1,6 +1,6 @@
 part of 'products_bloc.dart';
 
-abstract class ProductsEvent extends Equatable {
+sealed class ProductsEvent extends Equatable {
   const ProductsEvent();
 
   @override
@@ -25,4 +25,13 @@ class ToggleMapHeightEvent extends ProductsEvent {
 
   @override
   List<Object?> get props => [mapHeight];
+}
+
+class SetMarkersEvent extends ProductsEvent {
+  final Set<Marker> markers;
+
+  const SetMarkersEvent({required this.markers});
+
+  @override
+  List<Object?> get props => [markers];
 }

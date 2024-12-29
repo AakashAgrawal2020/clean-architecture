@@ -1,4 +1,5 @@
-
+import 'package:clean_architecture/core/helpers/colours.dart';
+import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/presentation/routes/routes.dart';
 import 'package:clean_architecture/presentation/screens/views.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class RouteGenerator {
         return PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 700),
             reverseTransitionDuration: const Duration(milliseconds: 700),
+            barrierColor: Colours.ng1000.withOpacity(0.4),
             pageBuilder: (context, animation, secondaryAnimation) =>
                 DirectionsScreen(
                     product: args['product'],
@@ -28,7 +30,7 @@ class RouteGenerator {
                     currentLocation: args['currentLocation']),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
-              var begin = const Offset(1.0, 0.0);
+              var begin = const Offset(Dimens.dm1, Dimens.dm0);
               var end = Offset.zero;
               var tween = Tween(begin: begin, end: end)
                   .chain(CurveTween(curve: Curves.ease));
