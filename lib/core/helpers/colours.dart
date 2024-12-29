@@ -20,5 +20,7 @@ class Colours {
   static const Color ng50 = Color(0xFFF2F2F2);
   static const Color ng100 = Color(0xFFE6E6E6);
   static const Color ng200 = Color(0xFFCCCCCC);
+  static const Color ng700 = Color(0xFF474747);
+  static const Color ng800 = Color(0xFF2E2E2E);
   static const Color ng1000 = Color(0xFF0A0A0A);
 }

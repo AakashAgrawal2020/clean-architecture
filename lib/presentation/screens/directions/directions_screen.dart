@@ -1,5 +1,6 @@
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
+import 'package:clean_architecture/core/helpers/textstyles.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/core/utils/maps_util.dart';
@@ -59,11 +60,12 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                         bottomLeft: Radius.circular(Dimens.dm16),
                         bottomRight: Radius.circular(Dimens.dm16))),
                 child: AppBar(
+                    iconTheme: const IconThemeData(color: Colours.ng100),
                     backgroundColor: Colors.transparent,
                     surfaceTintColor: Colours.white,
                     shadowColor: Colours.black.withOpacity(0.5),
                     title: Text('Directions for ${widget.product.title}',
-                        style: textStyles(context).asgardTextStyle2),
+                        style: TextStyles.textStyle3),
                     centerTitle: true,
                     elevation: 5))),
         body: BlocProvider(
@@ -103,7 +105,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                         Polyline(
                             polylineId: const PolylineId('route'),
                             points: state.polylinePoints,
-                            color: Colours.purple,
+                            color: Colours.purple3,
                             width: Dimens.dm6.toInt())
                       },
                       onMapCreated: (GoogleMapController controller) async {

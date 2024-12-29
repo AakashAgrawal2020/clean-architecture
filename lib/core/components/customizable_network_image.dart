@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +13,7 @@ class CustomizableNetworkImage extends StatelessWidget {
   final int placeholderFadeInDuration;
   final double placeholderPadding;
   final BorderRadiusGeometry borderRadius;
+  final Color borderColor;
 
   const CustomizableNetworkImage(
       {super.key,
@@ -26,13 +26,14 @@ class CustomizableNetworkImage extends StatelessWidget {
       required this.imgFadeOutDuration,
       required this.placeholderFadeInDuration,
       required this.placeholderPadding,
-      required this.borderRadius});
+      required this.borderRadius,
+      required this.borderColor});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(width: Dimens.dm1, color: Colours.ng100),
+          border: Border.all(width: Dimens.dm1, color: borderColor),
           borderRadius: borderRadius),
       child: ClipRRect(
         borderRadius: borderRadius,

@@ -123,7 +123,7 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                               parent: _animationController,
                               curve: Curves.ease)),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: Dimens.dm0),
+                        padding: const EdgeInsets.only(top: Dimens.dm4),
                         child: InkWell(
                           onTap: () {
                             _animationController.reverse().then((_) {
@@ -137,7 +137,9 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                             child: Container(
                               width: context.contextWidth / 2.2,
                               decoration: BoxDecoration(
-                                  color: Colours.white.withOpacity(0.9),
+                                  color: colours(context)
+                                      .backgroundColor
+                                      .withOpacity(0.9),
                                   borderRadius:
                                       BorderRadius.circular(Dimens.dm20),
                                   boxShadow: [
@@ -167,6 +169,8 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                                             imgFadeOutDuration: 100,
                                             placeholderFadeInDuration: 0,
                                             placeholderPadding: Dimens.dm10,
+                                            borderColor:
+                                                colours(context).borderColor1,
                                             borderRadius: BorderRadius.circular(
                                                 Dimens.dm100)),
                                         Expanded(
@@ -183,12 +187,13 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                                                     textAlign:
                                                         TextAlign.center)))
                                       ])),
-                                  const Padding(
-                                      padding: EdgeInsets.symmetric(
+                                  Padding(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: Dimens.dm2),
                                       child: Divider(
-                                          thickness: Dimens.dm2,
-                                          color: Colours.ng200)),
+                                          thickness: Dimens.dm1,
+                                          color:
+                                              colours(context).borderColor2)),
                                   Padding(
                                       padding: const EdgeInsets.only(
                                           left: Dimens.dm10,

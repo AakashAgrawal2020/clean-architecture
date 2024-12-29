@@ -82,6 +82,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                     imgFadeOutDuration: 100,
                     placeholderFadeInDuration: 0,
                     placeholderPadding: Dimens.dm60,
+                    borderColor: colours(context).borderColor1,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(Dimens.dm10),
                         topRight: Radius.circular(Dimens.dm10))),
@@ -91,7 +92,8 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                     child: Text(widget.product.title,
                         style: textStyles(context).asgardTextStyle2,
                         textAlign: TextAlign.center)),
-                const Divider(height: Dimens.dm2, color: Colours.ng100),
+                Divider(
+                    height: Dimens.dm2, color: colours(context).borderColor1),
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: Dimens.dm10, horizontal: Dimens.dm16),

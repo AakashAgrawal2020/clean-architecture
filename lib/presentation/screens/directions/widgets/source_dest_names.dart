@@ -35,7 +35,9 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
               padding: const EdgeInsets.symmetric(vertical: Dimens.dm32),
               child: Row(children: [
                 Expanded(
-                    child: Container(height: Dimens.dm1, color: Colours.ng100)),
+                    child: Divider(
+                        color: colours(context).borderColor2,
+                        thickness: Dimens.dm1)),
                 const Stack(alignment: Alignment.center, children: [
                   CircularLoader(
                       height: Dimens.dm50,
@@ -45,7 +47,9 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
                       color: Colours.purple, size: Dimens.dm30)
                 ]),
                 Expanded(
-                    child: Container(height: Dimens.dm1, color: Colours.ng100))
+                    child: Divider(
+                        color: colours(context).borderColor2,
+                        thickness: Dimens.dm1)),
               ]));
         } else if (state.geocodeApiStatus == ApiStatus.completed) {
           return Column(children: [
@@ -69,13 +73,17 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
                 padding: const EdgeInsets.symmetric(vertical: Dimens.dm10),
                 child: Row(children: [
                   Expanded(
-                      child:
-                          Container(height: Dimens.dm1, color: Colours.ng100)),
+                      child: Divider(
+                          endIndent: Dimens.dm10,
+                          color: colours(context).borderColor2,
+                          thickness: Dimens.dm1)),
                   Text('$distance Kms',
                       style: textStyles(context).asgardTextStyle5),
                   Expanded(
-                      child:
-                          Container(height: Dimens.dm1, color: Colours.ng100))
+                      child: Divider(
+                          indent: Dimens.dm10,
+                          color: colours(context).borderColor2,
+                          thickness: Dimens.dm1)),
                 ])),
             Padding(
                 padding: const EdgeInsets.only(

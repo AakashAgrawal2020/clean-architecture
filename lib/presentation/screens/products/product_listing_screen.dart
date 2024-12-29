@@ -4,6 +4,7 @@ import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
+import 'package:clean_architecture/core/helpers/textstyles.dart';
 import 'package:clean_architecture/core/utils/animations_util.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
@@ -83,9 +84,17 @@ class _ProductListingScreenState extends State<ProductListingScreen>
               child: AppBar(
                   backgroundColor: Colors.transparent,
                   surfaceTintColor: Colours.white,
+                  actions: [
+                    Padding(
+                        padding: const EdgeInsets.only(right: Dimens.dm6),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.shield_moon,
+                                color: Colours.white, size: Dimens.dm30)))
+                  ],
                   shadowColor: Colours.black.withOpacity(0.5),
                   title: Text(Strings.productListingScreenHeading,
-                      style: textStyles(context).asgardTextStyle2),
+                      style: TextStyles.textStyle3),
                   centerTitle: true,
                   elevation: 5))),
       body: BlocProvider(
