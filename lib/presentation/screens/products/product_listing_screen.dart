@@ -8,6 +8,7 @@ import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/helpers/textstyles.dart';
+import 'package:clean_architecture/core/services/theme/theme_manager.dart';
 import 'package:clean_architecture/core/utils/animations_util.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
@@ -97,12 +98,14 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                       padding: const EdgeInsets.only(right: Dimens.dm6),
                         child: IconButton(
                           onPressed: () {
-                            context.read<ThemeBloc>().add(SetThemeEvent(
-                                themeData:
-                                    context.read<ThemeBloc>().state.themeData ==
-                                            lightTheme
-                                        ? darkTheme
-                                        : lightTheme));
+                            final newTheme =
+                                context.read<ThemeBloc>().state.themeData ==
+                                        lightTheme
+                                    ? darkTheme
+                                    : lightTheme;
+                            ThemeManager().setTheme(themeData: newTheme);
+                            BlocProvider.of<ThemeBloc>(context)
+                                .add(SetThemeEvent(themeData: newTheme));
                           },
                           icon: const Icon(Icons.shield_moon,
                               color: Colours.white, size: Dimens.dm30)))
@@ -164,11 +167,17 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                           delegate: SliverChildBuilderDelegate(
                               childCount: state.products.length,
                               (context, index) {
-                            return ProductCard(
-                                currentLocation: currentLocation,
-                                animationController:
-                                    _animationControllers[index],
-                                product: state.products[index]);
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: state.products.length - 1 == index
+                                      ? Dimens.dm40
+                                      : Dimens.dm0),
+                              child: ProductCard(
+                                  currentLocation: currentLocation,
+                                  animationController:
+                                      _animationControllers[index],
+                                  product: state.products[index]),
+                            );
                           }),
                         ),
                       ],

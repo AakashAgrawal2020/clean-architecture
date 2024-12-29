@@ -1,3 +1,5 @@
+import 'package:clean_architecture/core/blocs/theme_bloc/theme_bloc.dart';
+import 'package:clean_architecture/core/config/theme/dark_theme_config.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/textstyles.dart';
@@ -70,7 +72,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                     elevation: 5))),
         body: BlocProvider(
           create: (context) {
-            final bloc = DirectionsBloc(mapRepository: getIt());
+            final bloc = DirectionsBloc(googleMapRepository: getIt());
             bloc.add(FetchDirectionsEvent(source: _source, dest: _dest));
             bloc.add(SetMarkersEvent(source: _source, dest: _dest));
             bloc.add(FetchLocationNamesEvent(source: _source, dest: _dest));
@@ -110,8 +112,14 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                       },
                       onMapCreated: (GoogleMapController controller) async {
                         _googleMapController = controller;
-                        _mapStyle = await MapsUtil.setLightMapStyle();
+                        if (context.read<ThemeBloc>().state.themeData ==
+                            darkTheme) {
+                          _mapStyle = await MapsUtil.setDarkMapStyle();
+                        } else {
+                          _mapStyle = await MapsUtil.setLightMapStyle();
+                        }
                         _googleMapController?.setMapStyle(_mapStyle);
+
                         if (state.markers.isNotEmpty) {
                           MapsUtil.fitMarkersInView(
                               markers: state.markers,

@@ -1,4 +1,6 @@
+import 'package:clean_architecture/core/blocs/theme_bloc/theme_bloc.dart';
 import 'package:clean_architecture/core/components/customizable_network_image.dart';
+import 'package:clean_architecture/core/config/theme/dark_theme_config.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
@@ -90,9 +92,14 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                               zoom: 5.0),
                           onMapCreated: (GoogleMapController controller) async {
                             _googleMapController = controller;
+                          if (context.read<ThemeBloc>().state.themeData ==
+                              darkTheme) {
                             _mapStyle = await MapsUtil.setDarkMapStyle();
-                            _googleMapController.setMapStyle(_mapStyle);
-                            if (context.mounted) {
+                          } else {
+                            _mapStyle = await MapsUtil.setLightMapStyle();
+                          }
+                          _googleMapController.setMapStyle(_mapStyle);
+                          if (context.mounted) {
                               await ProductServices()
                                   .initializeMarkers(
                                       context: context,
@@ -233,8 +240,7 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                                       textAlign: TextAlign.center))),
                         )
                       : const SizedBox.shrink()
-                ],
-              ));
+              ]));
         },
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:clean_architecture/core/config/secrets.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
-import 'package:clean_architecture/domain/repositories/map/map_repository.dart';
+import 'package:clean_architecture/domain/repositories/google_map/google_map_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,9 +10,9 @@ part 'directions_event.dart';
 part 'directions_state.dart';
 
 class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
-  MapRepository mapRepository;
+  GoogleMapRepository googleMapRepository;
 
-  DirectionsBloc({required this.mapRepository})
+  DirectionsBloc({required this.googleMapRepository})
       : super(const DirectionsState()) {
     on<FetchDirectionsEvent>(_onFetchDirectionsEvent);
     on<FetchLocationNamesEvent>(_onFetchLocationNamesEvent);
@@ -30,7 +30,7 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
     try {
       emit(state.copyWith(directionsApiStatus: ApiStatus.loading));
       final polylinePoints =
-          await mapRepository.fetchDirections(queryParams: queryParams);
+          await googleMapRepository.fetchDirections(queryParams: queryParams);
       emit(state.copyWith(
           polylinePoints: polylinePoints,
           directionsApiStatus: ApiStatus.completed));
@@ -51,11 +51,11 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
       FetchLocationNamesEvent event, Emitter<DirectionsState> emit) async {
     try {
       emit(state.copyWith(geocodeApiStatus: ApiStatus.loading));
-      String sourceName = await mapRepository.getPlaceName(queryParams: {
+      String sourceName = await googleMapRepository.getPlaceName(queryParams: {
         'latlng': '${event.source.latitude},${event.source.longitude}',
         'key': Secrets.GOOGLE_MAP_API_KEY
       });
-      String destName = await mapRepository.getPlaceName(queryParams: {
+      String destName = await googleMapRepository.getPlaceName(queryParams: {
         'latlng': '${event.dest.latitude},${event.dest.longitude}',
         'key': Secrets.GOOGLE_MAP_API_KEY
       });
