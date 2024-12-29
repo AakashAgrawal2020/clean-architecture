@@ -20,7 +20,7 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
       width: context.contextWidth,
       padding: const EdgeInsets.symmetric(vertical: Dimens.dm20),
       decoration:
-          BoxDecoration(color: colours(context).backgroundColor, boxShadow: [
+          BoxDecoration(color: colours(context).backgroundColor1, boxShadow: [
         BoxShadow(
             color: colours(context).shadowColor2,
             spreadRadius: Dimens.dm1,
@@ -38,13 +38,13 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
                     child: Divider(
                         color: colours(context).borderColor2,
                         thickness: Dimens.dm1)),
-                const Stack(alignment: Alignment.center, children: [
+                 Stack(alignment: Alignment.center, children: [
                   CircularLoader(
                       height: Dimens.dm50,
                       width: Dimens.dm50,
-                      color: Colours.purple),
-                  Icon(Icons.route_rounded,
-                      color: Colours.purple, size: Dimens.dm30)
+                      color: colours(context).backgroundColor2),
+                   Icon(Icons.route_rounded,
+                      color: colours(context).backgroundColor2, size: Dimens.dm30)
                 ]),
                 Expanded(
                     child: Divider(

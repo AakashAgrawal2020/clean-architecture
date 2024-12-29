@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:clean_architecture/core/components/circular_loader.dart';
-import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
@@ -18,13 +17,13 @@ class DirectionsLoading extends StatelessWidget with StyleExtension {
         child: Container(
             height: context.contextHeight,
             width: context.contextWidth,
-            color: colours(context).backgroundColor.withOpacity(0.5),
+            color: colours(context).backgroundColor1.withOpacity(0.5),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const CircularLoader(
+              CircularLoader(
                   height: Dimens.dm40,
                   width: Dimens.dm40,
-                  color: Colours.purple),
+                  color: colours(context).backgroundColor2),
               Dimens.dm20.verticalSpace,
               Text(Strings.identifyingRoute,
                   style:

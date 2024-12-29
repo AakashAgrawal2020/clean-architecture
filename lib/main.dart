@@ -1,4 +1,5 @@
 import 'package:clean_architecture/core/config/theme/dark_theme_config.dart';
+import 'package:clean_architecture/core/config/theme/light_theme_config.dart';
 import 'package:clean_architecture/core/service_locator/service_locator.dart';
 import 'package:clean_architecture/presentation/routes/route_generator.dart';
 import 'package:clean_architecture/presentation/routes/routes.dart';
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        theme: darkTheme,
+        theme: lightTheme,
         initialRoute: Routes.splashScreen,
         onGenerateRoute: RouteGenerator.generateRoute);
   }

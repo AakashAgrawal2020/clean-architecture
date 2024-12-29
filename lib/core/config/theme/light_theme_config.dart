@@ -39,10 +39,12 @@ final lightTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
           fontStyle: Fonts.normal)
   ),
   AsgardColours(
-      backgroundColor: Colours.white,
-      tileColor: Colours.grey2,
+      backgroundColor1: Colours.white,
+      backgroundColor2: Colours.purple,
+      tileColor1: Colours.grey2,
       borderColor1: Colours.ng100,
       borderColor2: Colours.ng200,
+      iconColor1: Colours.ng1000,
       shadowColor1: Colours.black.withOpacity(0.25),
       shadowColor2: Colours.black.withOpacity(0.15))
 ]);

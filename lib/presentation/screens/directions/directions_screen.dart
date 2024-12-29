@@ -47,7 +47,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: colours(context).backgroundColor,
+        backgroundColor: colours(context).backgroundColor1,
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(Dimens.dm60),
             child: Container(

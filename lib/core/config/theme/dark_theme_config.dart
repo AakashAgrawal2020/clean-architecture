@@ -38,10 +38,12 @@ final darkTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
           color: Colours.ng100,
           fontStyle: Fonts.normal)),
   AsgardColours(
-      backgroundColor: Colours.ng1000,
+      backgroundColor1: Colours.ng1000,
+      backgroundColor2: Colours.ng200,
       borderColor1: Colours.ng800,
       borderColor2: Colours.ng700,
-      tileColor: Colours.grey1,
+      iconColor1: Colours.white,
+      tileColor1: Colours.grey1,
       shadowColor1: Colours.white.withOpacity(0.25),
       shadowColor2: Colours.white.withOpacity(0.15))
 ]);

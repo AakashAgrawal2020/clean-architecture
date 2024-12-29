@@ -61,7 +61,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: Dimens.dm20),
             decoration: BoxDecoration(
-                color: colours(context).backgroundColor,
+                color: colours(context).backgroundColor1,
                 borderRadius: BorderRadius.circular(Dimens.dm10),
                 boxShadow: [
                   BoxShadow(

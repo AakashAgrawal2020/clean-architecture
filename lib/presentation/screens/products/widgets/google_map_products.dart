@@ -67,7 +67,7 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
               margin: const EdgeInsets.only(
                   left: Dimens.dm20, right: Dimens.dm20, top: Dimens.dm20),
               decoration: BoxDecoration(
-                  color: colours(context).backgroundColor,
+                  color: colours(context).backgroundColor1,
                   borderRadius: BorderRadius.circular(Dimens.dm20),
                   boxShadow: [
                     BoxShadow(
@@ -138,7 +138,7 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                               width: context.contextWidth / 2.2,
                               decoration: BoxDecoration(
                                   color: colours(context)
-                                      .backgroundColor
+                                      .backgroundColor1
                                       .withOpacity(0.9),
                                   borderRadius:
                                       BorderRadius.circular(Dimens.dm20),

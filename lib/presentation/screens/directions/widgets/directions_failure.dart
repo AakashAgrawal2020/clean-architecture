@@ -17,7 +17,7 @@ class DirectionsError extends StatelessWidget with StyleExtension {
         child: Container(
             height: context.contextHeight,
             width: context.contextWidth,
-            color: colours(context).backgroundColor.withOpacity(0.5),
+            color: colours(context).backgroundColor1.withOpacity(0.5),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Icon(Icons.explore_off,

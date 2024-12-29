@@ -69,7 +69,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colours(context).backgroundColor,
+      backgroundColor: colours(context).backgroundColor1,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(Dimens.dm60),
           child: Container(
@@ -137,7 +137,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                       AnimationsUtil.createController(
                           vsync: this, autoPlay: true, itemDuration: 750);
                   return RefreshIndicator(
-                    backgroundColor: colours(context).backgroundColor,
+                    backgroundColor: colours(context).backgroundColor1,
                     color: Colours.purple,
                     onRefresh: () async {
                       context.read<ProductsBloc>().add(FetchProductsEvent());
