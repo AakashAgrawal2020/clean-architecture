@@ -32,6 +32,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
     with StyleExtension {
   late LatLng _source, _dest;
   GoogleMapController? _googleMapController;
+  late String _mapStyle;
 
   @override
   void initState() {
@@ -105,8 +106,10 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                             color: Colours.purple,
                             width: Dimens.dm6.toInt())
                       },
-                      onMapCreated: (GoogleMapController controller) {
+                      onMapCreated: (GoogleMapController controller) async {
                         _googleMapController = controller;
+                        _mapStyle = await MapsUtil.setDarkMapStyle();
+                        _googleMapController?.setMapStyle(_mapStyle);
                         if (state.markers.isNotEmpty) {
                           MapsUtil.fitMarkersInView(
                               markers: state.markers,

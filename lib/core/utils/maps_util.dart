@@ -1,13 +1,16 @@
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsUtil {
+  static const String light_theme = 'assets/map_modes/light_mode.json';
+  static const String dark_theme = 'assets/map_modes/dark_mode.json';
+
   static Future<BitmapDescriptor> createCustomMarker(String text) async {
     final textPainter = TextPainter(
         text: TextSpan(
@@ -101,4 +104,13 @@ class MapsUtil {
         Geolocator.distanceBetween(startLat, startLong, endLat, endLong);
     return (distanceInMeters / 1000).round();
   }
+
+  static Future<String> setDarkMapStyle() async {
+    return await rootBundle.loadString(dark_theme);
+  }
+
+  static Future<String> setLightMapStyle() async {
+    return await rootBundle.loadString(light_theme);
+  }
+
 }

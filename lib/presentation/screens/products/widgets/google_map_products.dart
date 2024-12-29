@@ -7,6 +7,7 @@ import 'package:clean_architecture/core/helpers/textstyles.dart';
 import 'package:clean_architecture/core/services/product/product_services.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
+import 'package:clean_architecture/core/utils/maps_util.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/presentation/screens/products/bloc/products_bloc.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
     with StyleExtension, SingleTickerProviderStateMixin {
   late GoogleMapController _googleMapController;
   late AnimationController _animationController;
+  late String _mapStyle;
 
   @override
   void initState() {
@@ -79,28 +81,31 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                   ClipRRect(
                       borderRadius: BorderRadius.circular(Dimens.dm20),
                       child: GoogleMap(
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
                           mapType: MapType.terrain,
                           markers: state.markers,
+                          myLocationButtonEnabled: false,
                           initialCameraPosition: CameraPosition(
                               target: LatLng(widget.products[0].coordinates[0],
                                   widget.products[0].coordinates[1]),
                               zoom: 5.0),
                           onMapCreated: (GoogleMapController controller) async {
                             _googleMapController = controller;
-                            await ProductServices()
-                                .initializeMarkers(
-                                    context: context,
-                                    products: widget.products,
-                                    selectedProduct: state.selectedProduct,
-                                    googleMapController: _googleMapController,
-                                    animationController: _animationController)
-                                .then((Set<Marker> markers) {
-                              context
-                                  .read<ProductsBloc>()
-                                  .add(SetMarkersEvent(markers: markers));
-                            });
+                            _mapStyle = await MapsUtil.setDarkMapStyle();
+                            _googleMapController.setMapStyle(_mapStyle);
+                            if (context.mounted) {
+                              await ProductServices()
+                                  .initializeMarkers(
+                                      context: context,
+                                      products: widget.products,
+                                      selectedProduct: state.selectedProduct,
+                                      googleMapController: _googleMapController,
+                                      animationController: _animationController)
+                                  .then((Set<Marker> markers) {
+                                context
+                                    .read<ProductsBloc>()
+                                    .add(SetMarkersEvent(markers: markers));
+                              });
+                            }
                           },
                           onTap: (_) {
                             if (_animationController.isCompleted) {

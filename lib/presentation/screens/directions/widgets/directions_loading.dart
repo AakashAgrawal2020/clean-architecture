@@ -18,7 +18,7 @@ class DirectionsLoading extends StatelessWidget with StyleExtension {
         child: Container(
             height: context.contextHeight,
             width: context.contextWidth,
-            color: Colours.white.withOpacity(0.5),
+            color: colours(context).backgroundColor.withOpacity(0.5),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               const CircularLoader(

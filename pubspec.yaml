@@ -46,4 +46,6 @@ flutter:
     - assets/no_internet.json
     - assets/zero_products.json
     - assets/error.json
+    - assets/map_modes/dark_mode.json
+    - assets/map_modes/light_mode.json
 

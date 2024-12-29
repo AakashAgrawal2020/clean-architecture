@@ -19,9 +19,10 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
     return Container(
       width: context.contextWidth,
       padding: const EdgeInsets.symmetric(vertical: Dimens.dm20),
-      decoration: BoxDecoration(color: Colours.purple2, boxShadow: [
+      decoration:
+          BoxDecoration(color: colours(context).backgroundColor, boxShadow: [
         BoxShadow(
-            color: colours(context).shadowColor1,
+            color: colours(context).shadowColor2,
             spreadRadius: Dimens.dm1,
             blurRadius: Dimens.dm10,
             offset: const Offset(Dimens.dm0, -Dimens.dm4))
