@@ -1,5 +1,8 @@
+import 'package:clean_architecture/core/blocs/theme_bloc/theme_bloc.dart';
 import 'package:clean_architecture/core/components/error.dart';
 import 'package:clean_architecture/core/components/no_internet.dart';
+import 'package:clean_architecture/core/config/theme/dark_theme_config.dart';
+import 'package:clean_architecture/core/config/theme/light_theme_config.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/lotties.dart';
@@ -82,21 +85,29 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                       bottomLeft: Radius.circular(Dimens.dm16),
                       bottomRight: Radius.circular(Dimens.dm16))),
               child: AppBar(
-                  backgroundColor: Colors.transparent,
-                  surfaceTintColor: Colours.white,
-                  actions: [
-                    Padding(
-                        padding: const EdgeInsets.only(right: Dimens.dm6),
+                elevation: 5,
+                centerTitle: true,
+                backgroundColor: Colors.transparent,
+                surfaceTintColor: Colours.white,
+                shadowColor: Colours.black.withOpacity(0.5),
+                title: Text(Strings.productListingScreenHeading,
+                    style: TextStyles.textStyle3),
+                actions: [
+                  Padding(
+                      padding: const EdgeInsets.only(right: Dimens.dm6),
                         child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.shield_moon,
-                                color: Colours.white, size: Dimens.dm30)))
+                          onPressed: () {
+                            context.read<ThemeBloc>().add(SetThemeEvent(
+                                themeData:
+                                    context.read<ThemeBloc>().state.themeData ==
+                                            lightTheme
+                                        ? darkTheme
+                                        : lightTheme));
+                          },
+                          icon: const Icon(Icons.shield_moon,
+                              color: Colours.white, size: Dimens.dm30)))
                   ],
-                  shadowColor: Colours.black.withOpacity(0.5),
-                  title: Text(Strings.productListingScreenHeading,
-                      style: TextStyles.textStyle3),
-                  centerTitle: true,
-                  elevation: 5))),
+              ))),
       body: BlocProvider(
         create: (context) =>
             ProductsBloc(productRepository: getIt())..add(FetchProductsEvent()),

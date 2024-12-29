@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'asgard_colors.dart';
 import 'asgard_textstyles.dart';
 
-final lightTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
+final ThemeData lightTheme =
+    ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
   const AsgardTextStyles(
       asgardTextStyle1: TextStyle(
           fontSize: Fonts.fs24,

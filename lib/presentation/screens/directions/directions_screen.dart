@@ -110,7 +110,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                       },
                       onMapCreated: (GoogleMapController controller) async {
                         _googleMapController = controller;
-                        _mapStyle = await MapsUtil.setDarkMapStyle();
+                        _mapStyle = await MapsUtil.setLightMapStyle();
                         _googleMapController?.setMapStyle(_mapStyle);
                         if (state.markers.isNotEmpty) {
                           MapsUtil.fitMarkersInView(

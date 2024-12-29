@@ -7,8 +7,6 @@ class AsgardTextStyles extends ThemeExtension<AsgardTextStyles> {
   final TextStyle? asgardTextStyle4;
   final TextStyle? asgardTextStyle5;
   final TextStyle? asgardTextStyle6;
-  final TextStyle? asgardTextStyle7;
-  final TextStyle? asgardTextStyle8;
 
   const AsgardTextStyles(
       {this.asgardTextStyle1,
@@ -16,9 +14,7 @@ class AsgardTextStyles extends ThemeExtension<AsgardTextStyles> {
       this.asgardTextStyle3,
       this.asgardTextStyle4,
       this.asgardTextStyle5,
-      this.asgardTextStyle6,
-      this.asgardTextStyle7,
-      this.asgardTextStyle8});
+      this.asgardTextStyle6});
 
   @override
   AsgardTextStyles copyWith(
@@ -27,18 +23,14 @@ class AsgardTextStyles extends ThemeExtension<AsgardTextStyles> {
       TextStyle? asgardTextStyle3,
       TextStyle? asgardTextStyle4,
       TextStyle? asgardTextStyle5,
-      TextStyle? asgardTextStyle6,
-      TextStyle? asgardTextStyle7,
-      TextStyle? asgardTextStyle8}) {
+      TextStyle? asgardTextStyle6}) {
     return AsgardTextStyles(
         asgardTextStyle1: asgardTextStyle1 ?? this.asgardTextStyle1,
         asgardTextStyle2: asgardTextStyle2 ?? this.asgardTextStyle2,
         asgardTextStyle3: asgardTextStyle3 ?? this.asgardTextStyle3,
         asgardTextStyle4: asgardTextStyle4 ?? this.asgardTextStyle4,
         asgardTextStyle5: asgardTextStyle5 ?? this.asgardTextStyle5,
-        asgardTextStyle6: asgardTextStyle6 ?? this.asgardTextStyle6,
-        asgardTextStyle7: asgardTextStyle7 ?? this.asgardTextStyle7,
-        asgardTextStyle8: asgardTextStyle8 ?? this.asgardTextStyle8);
+        asgardTextStyle6: asgardTextStyle6 ?? this.asgardTextStyle6);
   }
 
   @override
@@ -56,10 +48,6 @@ class AsgardTextStyles extends ThemeExtension<AsgardTextStyles> {
         asgardTextStyle5:
             TextStyle.lerp(asgardTextStyle5, other.asgardTextStyle5, t)!,
         asgardTextStyle6:
-            TextStyle.lerp(asgardTextStyle6, other.asgardTextStyle6, t)!,
-        asgardTextStyle7:
-            TextStyle.lerp(asgardTextStyle7, other.asgardTextStyle7, t)!,
-        asgardTextStyle8:
-            TextStyle.lerp(asgardTextStyle8, other.asgardTextStyle8, t)!);
+            TextStyle.lerp(asgardTextStyle6, other.asgardTextStyle6, t)!);
   }
 }
