@@ -28,15 +28,16 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> with StyleExtension {
-  late int distance = MapsUtil.distanceInKms(
-      currentLocation!.latitude,
-      currentLocation!.longitude,
-      widget.product.coordinates[0],
-      widget.product.coordinates[1]);
+  late int distance;
 
   @override
   void initState() {
     super.initState();
+    distance = MapsUtil.distanceInKms(
+        currentLocation!.latitude,
+        currentLocation!.longitude,
+        widget.product.coordinates[0],
+        widget.product.coordinates[1]);
   }
 
   @override
@@ -88,7 +89,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                     child: Text(widget.product.title,
                         style: textStyles(context).asgardTextStyle2,
                         textAlign: TextAlign.center)),
-                const Divider(height: 2, color: Colours.ng100),
+                const Divider(height: Dimens.dm2, color: Colours.ng100),
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: Dimens.dm10, horizontal: Dimens.dm16),
@@ -110,7 +111,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                           ? Padding(
                               padding: const EdgeInsets.only(left: Dimens.dm4),
                               child: Text('$distance Kms',
-                                  style: textStyles(context).asgardTextStyle2))
+                                  style: textStyles(context).asgardTextStyle4))
                           : IconButton(
                               onPressed: () async {
                                 requestLocationPermission(openSettings: true);
@@ -130,8 +131,7 @@ class _ProductCardState extends State<ProductCard> with StyleExtension {
                                     'product': widget.product,
                                     'currentLocation': widget.currentLocation
                                   });
-                            }),
-                      ),
+                              })),
                     ),
                   ],
                 ),

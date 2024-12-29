@@ -4,7 +4,7 @@ abstract class DirectionsEvent extends Equatable {
   const DirectionsEvent();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class FetchDirectionsEvent extends DirectionsEvent {
@@ -14,7 +14,7 @@ class FetchDirectionsEvent extends DirectionsEvent {
   const FetchDirectionsEvent({required this.source, required this.dest});
 
   @override
-  List<Object?> get props => [source, dest];
+  List<Object> get props => [source, dest];
 }
 
 class FetchLocationNamesEvent extends DirectionsEvent {
@@ -24,7 +24,7 @@ class FetchLocationNamesEvent extends DirectionsEvent {
   const FetchLocationNamesEvent({required this.source, required this.dest});
 
   @override
-  List<Object?> get props => [source, dest];
+  List<Object> get props => [source, dest];
 }
 
 class SetMarkersEvent extends DirectionsEvent {
@@ -34,5 +34,5 @@ class SetMarkersEvent extends DirectionsEvent {
   const SetMarkersEvent({required this.source, required this.dest});
 
   @override
-  List<Object?> get props => [source, dest];
+  List<Object> get props => [source, dest];
 }

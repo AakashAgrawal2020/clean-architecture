@@ -94,6 +94,9 @@ class _ProductListingScreenState extends State<ProductListingScreen>
         child: SafeArea(
           bottom: false,
           child: BlocBuilder<ProductsBloc, ProductsState>(
+            buildWhen: (current, previous) {
+              return current.status != previous.status;
+            },
             builder: (context, state) {
               if (state.status == ApiStatus.noInternet) {
                 return NoInternet(tryAgain: () {

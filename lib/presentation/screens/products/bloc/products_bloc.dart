@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/domain/repositories/product/product_repository.dart';
@@ -12,8 +13,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductRepository productRepository;
 
   ProductsBloc({required this.productRepository})
-      : super(const ProductsState()) {
+      : super(const ProductsState(mapHeight: Dimens.dm100)) {
     on<FetchProductsEvent>(_onFetchProductsEvent);
+    on<UpdateSelectedProductEvent>(_onUpdateSelectedProductEvent);
+    on<ToggleMapHeightEvent>(_onToggleMapHeightEvent);
   }
 
   void _onFetchProductsEvent(
@@ -36,5 +39,15 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         ));
       }
     }
+  }
+
+  void _onUpdateSelectedProductEvent(
+      UpdateSelectedProductEvent event, Emitter<ProductsState> emit) {
+    emit(state.copyWith(selectedProduct: event.selectedProduct));
+  }
+
+  void _onToggleMapHeightEvent(
+      ToggleMapHeightEvent event, Emitter<ProductsState> emit) {
+    emit(state.copyWith(mapHeight: event.mapHeight));
   }
 }
