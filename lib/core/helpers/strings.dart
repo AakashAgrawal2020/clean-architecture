@@ -16,7 +16,7 @@ class Strings {
   static String tryAgain = 'Try again';
   static String tapToUnveilMap = 'Tap to Unveil the Products Exact Location on the Map!';
 
-  static String networkSettings = 'Network Settings';
+  static String networkSettings = 'Settings';
 
   static String notInternetMessage =
       'Looks like you’re offline—get back online to access great products!';

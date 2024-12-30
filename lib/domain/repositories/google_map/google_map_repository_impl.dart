@@ -1,7 +1,6 @@
 import 'package:clean_architecture/core/config/urls.dart';
 import 'package:clean_architecture/core/network/network_services.dart';
 import 'package:clean_architecture/core/utils/maps_util.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'google_map_repository.dart';

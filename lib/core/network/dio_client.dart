@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:clean_architecture/core/config/urls.dart';
 import 'package:clean_architecture/core/network/network_services.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
 class DioClient implements NetworkServices {
@@ -26,7 +25,7 @@ class DioClient implements NetworkServices {
   void _initializeInterceptors() {
     _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      if (!await _isConnectedToInternet()) {
+      if (await _isConnectedToInternet() == false) {
         return handler.reject(DioException(
             requestOptions: options,
             type: DioExceptionType.connectionError,
@@ -46,8 +45,17 @@ class DioClient implements NetworkServices {
   }
 
   Future<bool> _isConnectedToInternet() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    return !connectivityResult.contains(ConnectivityResult.none);
+    try {
+      final response = await Dio().get(
+        Urls.googleForConnectivityCheck,
+        options: Options(
+            sendTimeout: const Duration(seconds: 2),
+            receiveTimeout: const Duration(seconds: 2)),
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
   }
 
   bool _shouldRetry(DioException exception) {

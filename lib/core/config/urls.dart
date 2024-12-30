@@ -7,4 +7,6 @@ class Urls {
       'https://maps.googleapis.com/maps/api/directions/json?';
   static String googleMapGeocodeUrl =
       'https://maps.googleapis.com/maps/api/geocode/json?';
+
+  static String googleForConnectivityCheck = 'https://www.google.com';
 }

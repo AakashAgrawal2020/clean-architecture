@@ -64,7 +64,18 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
           destName: destName,
           geocodeApiStatus: ApiStatus.completed));
     } catch (error) {
-      emit(state.copyWith(geocodeApiStatus: ApiStatus.error));
+      if (error is DioException &&
+          error.type == DioExceptionType.connectionError) {
+        emit(state.copyWith(
+          geocodeApiStatus: ApiStatus.noInternet,
+          message: 'No Internet Connection',
+        ));
+      } else {
+        emit(state.copyWith(
+          geocodeApiStatus: ApiStatus.error,
+          message: 'An unexpected error occurred: ${error.toString()}',
+        ));
+      }
     }
   }
 
