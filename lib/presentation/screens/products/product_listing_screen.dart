@@ -13,6 +13,7 @@ import 'package:clean_architecture/core/utils/animations_util.dart';
 import 'package:clean_architecture/core/utils/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
+import 'package:clean_architecture/core/utils/maps_util.dart';
 import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/products/bloc/products_bloc.dart';
@@ -152,7 +153,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                           vsync: this, autoPlay: true, itemDuration: 750);
                   return RefreshIndicator(
                     backgroundColor: colours(context).backgroundColor1,
-                    color: Colours.purple,
+                    color: colours(context).backgroundColor2,
                     onRefresh: () async {
                       context.read<ProductsBloc>().add(FetchProductsEvent());
                     },
@@ -173,6 +174,11 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                                       ? Dimens.dm40
                                       : Dimens.dm0),
                               child: ProductCard(
+                                  distance: currentLocation!=null?MapsUtil.distanceInKms(
+                                      currentLocation!.latitude,
+                                      currentLocation!.longitude,
+                                      state.products[index].coordinates[0],
+                                      state.products[index].coordinates[1]):null,
                                   currentLocation: currentLocation,
                                   animationController:
                                       _animationControllers[index],
