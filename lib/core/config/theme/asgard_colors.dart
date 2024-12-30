@@ -10,6 +10,7 @@ class AsgardColours extends ThemeExtension<AsgardColours> {
   final Color shadowColor1;
   final Color shadowColor2;
   final Color textShadow1;
+  final Color polylineColor1;
 
   @override
   AsgardColours copyWith({
@@ -21,6 +22,7 @@ class AsgardColours extends ThemeExtension<AsgardColours> {
       Color? iconColor1,
       Color? shadowColor1,
       Color? shadowColor2,
+      Color? polylineColor1,
       Color? textShadow1}) {
     return AsgardColours(
         backgroundColor1: backgroundColor1 ?? this.backgroundColor1,
@@ -31,6 +33,7 @@ class AsgardColours extends ThemeExtension<AsgardColours> {
         tileColor1: tileColor1 ?? this.tileColor1,
         shadowColor1: shadowColor1 ?? this.shadowColor1,
         shadowColor2: shadowColor2 ?? this.shadowColor2,
+        polylineColor1: polylineColor1 ?? this.polylineColor1,
         textShadow1: textShadow1 ?? this.textShadow1);
   }
 
@@ -43,6 +46,7 @@ class AsgardColours extends ThemeExtension<AsgardColours> {
       required this.iconColor1,
       required this.shadowColor1,
       required this.shadowColor2,
+      required this.polylineColor1,
       required this.textShadow1});
 
   @override
@@ -59,6 +63,7 @@ class AsgardColours extends ThemeExtension<AsgardColours> {
         tileColor1: Color.lerp(tileColor1, other.tileColor1, t)!,
         shadowColor1: Color.lerp(shadowColor1, other.shadowColor1, t)!,
         shadowColor2: Color.lerp(shadowColor2, other.shadowColor2, t)!,
+        polylineColor1: Color.lerp(polylineColor1, other.polylineColor1, t)!,
         textShadow1: Color.lerp(textShadow1, other.shadowColor2, t)!);
   }
 }

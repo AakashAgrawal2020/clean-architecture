@@ -49,5 +49,5 @@ final ThemeData lightTheme =
       shadowColor1: Colours.black.withOpacity(0.25),
     shadowColor2: Colours.black.withOpacity(0.15),
     textShadow1: Colours.ng1000.withOpacity(0.5),
-  )
+      polylineColor1: Colours.purple)
 ]);

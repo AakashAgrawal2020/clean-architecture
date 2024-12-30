@@ -47,5 +47,5 @@ final darkTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
       shadowColor1: Colours.white.withOpacity(0.25),
     shadowColor2: Colours.white.withOpacity(0.15),
     textShadow1: Colours.ng200.withOpacity(0.5),
-  )
+      polylineColor1: Colours.white)
 ]);

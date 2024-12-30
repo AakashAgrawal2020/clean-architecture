@@ -108,7 +108,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                         Polyline(
                             polylineId: const PolylineId('route'),
                             points: state.polylinePoints,
-                            color: Colours.purple3,
+                            color: colours(context).polylineColor1,
                             width: Dimens.dm6.toInt())
                       },
                       onMapCreated: (GoogleMapController controller) async {
