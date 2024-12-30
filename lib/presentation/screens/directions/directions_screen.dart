@@ -11,6 +11,7 @@ import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/directions/bloc/directions_bloc.dart';
 import 'package:clean_architecture/presentation/screens/directions/widgets/directions_failure.dart';
 import 'package:clean_architecture/presentation/screens/directions/widgets/directions_loading.dart';
+import 'package:clean_architecture/presentation/screens/directions/widgets/directions_no_internet.dart';
 import 'package:clean_architecture/presentation/screens/directions/widgets/source_dest_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,6 +146,27 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                       child: state.directionsApiStatus == ApiStatus.error
                           ? const DirectionsError()
                           : const SizedBox.shrink()),
+                  AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      child: state.directionsApiStatus == ApiStatus.noInternet
+                          ? DirectionsNoInternet(
+                              onTryAgain: () {
+                                context.read<DirectionsBloc>().add(
+                                    FetchDirectionsEvent(
+                                        source: _source, dest: _dest));
+                                context.read<DirectionsBloc>().add(
+                                    SetMarkersEvent(
+                                        source: _source, dest: _dest));
+                                context.read<DirectionsBloc>().add(
+                                    FetchLocationNamesEvent(
+                                        source: _source, dest: _dest));
+                              },
+                            )
+                          : const SizedBox.shrink())
                 ])),
                 SourceDestNames(distance: widget.distance)
               ]);

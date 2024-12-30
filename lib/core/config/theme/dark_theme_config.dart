@@ -45,5 +45,7 @@ final darkTheme = ThemeData().copyWith(extensions: <ThemeExtension<dynamic>>[
       iconColor1: Colours.white,
       tileColor1: Colours.grey1,
       shadowColor1: Colours.white.withOpacity(0.25),
-      shadowColor2: Colours.white.withOpacity(0.15))
+    shadowColor2: Colours.white.withOpacity(0.15),
+    textShadow1: Colours.ng200.withOpacity(0.5),
+  )
 ]);

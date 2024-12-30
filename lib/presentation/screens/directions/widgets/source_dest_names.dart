@@ -18,7 +18,11 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
   Widget build(BuildContext context) {
     return Container(
       width: context.contextWidth,
-      padding: const EdgeInsets.symmetric(vertical: Dimens.dm20),
+      padding: EdgeInsets.symmetric(
+          vertical: context.read<DirectionsBloc>().state.directionsApiStatus ==
+                  ApiStatus.noInternet
+              ? Dimens.dm0
+              : Dimens.dm20),
       decoration:
           BoxDecoration(color: colours(context).backgroundColor1, boxShadow: [
         BoxShadow(
@@ -103,6 +107,8 @@ class SourceDestNames extends StatelessWidget with StyleExtension {
                               textAlign: TextAlign.center)))
                 ]))
           ]);
+        } else if (state.geocodeApiStatus == ApiStatus.noInternet) {
+          return const SizedBox.shrink();
         } else {
           return Padding(
             padding: const EdgeInsets.symmetric(

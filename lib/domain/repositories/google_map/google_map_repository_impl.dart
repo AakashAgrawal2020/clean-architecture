@@ -15,7 +15,7 @@ class GoogleMapRepositoryImpl extends GoogleMapRepository {
       {required Map<String, dynamic> queryParams}) async {
     try {
       final response = await networkServices.getAPI(
-          path: Urls.googleMapDirectionUrl, queryParams: queryParams);
+          path: Urls.googleMapDirectionPath, queryParams: queryParams);
       if (response != null) {
         return MapsUtil.decodePolyline(
             response['routes'][0]['overview_polyline']['points']);
@@ -32,7 +32,7 @@ class GoogleMapRepositoryImpl extends GoogleMapRepository {
       {required Map<String, dynamic> queryParams}) async {
     try {
       final response = await networkServices.getAPI(
-          path: Urls.googleMapGeocodeUrl, queryParams: queryParams);
+          path: Urls.googleMapGeocodePath, queryParams: queryParams);
       if (response != null) {
         return response['results'][0]['formatted_address'];
       } else {

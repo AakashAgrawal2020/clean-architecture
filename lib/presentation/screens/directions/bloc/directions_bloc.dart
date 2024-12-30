@@ -79,8 +79,6 @@ class DirectionsBloc extends Bloc<DirectionsEvent, DirectionsState> {
     }
   }
 
-
-
   void _onSetMarkersEvent(
       SetMarkersEvent event, Emitter<DirectionsState> emit) async {
     try {

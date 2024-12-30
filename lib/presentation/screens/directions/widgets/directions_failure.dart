@@ -28,7 +28,7 @@ class DirectionsError extends StatelessWidget with StyleExtension {
                       textStyles(context).asgardTextStyle2?.copyWith(shadows: [
                     Shadow(
                         blurRadius: Dimens.dm10,
-                        color: Colors.black.withOpacity(0.5),
+                        color: colours(context).textShadow1,
                         offset: const Offset(Dimens.dm2, Dimens.dm2))
                   ]))
             ])));

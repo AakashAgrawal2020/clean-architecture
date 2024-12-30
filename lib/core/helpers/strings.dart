@@ -19,5 +19,5 @@ class Strings {
   static String networkSettings = 'Settings';
 
   static String notInternetMessage =
-      'Looks like you’re offline—get back online to access great products!';
+      'It seems you’re currently offline. Please check your internet connection and try again.';
 }

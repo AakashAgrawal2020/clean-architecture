@@ -47,5 +47,7 @@ final ThemeData lightTheme =
       borderColor2: Colours.ng200,
       iconColor1: Colours.ng1000,
       shadowColor1: Colours.black.withOpacity(0.25),
-      shadowColor2: Colours.black.withOpacity(0.15))
+    shadowColor2: Colours.black.withOpacity(0.15),
+    textShadow1: Colours.ng1000.withOpacity(0.5),
+  )
 ]);
