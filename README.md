@@ -1,3 +1,17 @@
+Features in the App -
+
+1. Screen 1: Product Listing and Location Map
+2. Screen 2: Product Locations on Google Map
+3. Theme(Light & Dark) in App, along with local storage implementation of chosen theme
+4. Responsive Design
+5. Animations/Transitions
+6. Handling of edge cases (e.g., no internet, error states, pull to refresh, retry options,
+   permission denied)
+7. Clean and modular code
+8. BLoC State Management
+9. Google Maps integration with a smooth transition.
+10. Interactive Map
+
 App Architecture has mainly four directories/sections explained below -
 
 a) Core
