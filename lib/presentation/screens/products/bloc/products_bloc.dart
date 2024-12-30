@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
-import 'package:clean_architecture/core/utils/enums.dart';
+import 'package:clean_architecture/core/network/enums.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/domain/repositories/product/product_repository.dart';
 import 'package:dio/dio.dart';

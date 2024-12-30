@@ -9,7 +9,7 @@ import 'package:clean_architecture/core/helpers/textstyles.dart';
 import 'package:clean_architecture/core/services/product/product_services.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
-import 'package:clean_architecture/core/utils/maps_util.dart';
+import 'package:clean_architecture/core/utils/google_map_util.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/presentation/screens/products/bloc/products_bloc.dart';
 import 'package:flutter/material.dart';
@@ -94,9 +94,9 @@ class _GoogleMapProductsState extends State<GoogleMapProducts>
                             _googleMapController = controller;
                           if (context.read<ThemeBloc>().state.themeData ==
                               darkTheme) {
-                            _mapStyle = await MapsUtil.setDarkMapStyle();
+                            _mapStyle = await GoogleMapUtil.setDarkMapStyle();
                           } else {
-                            _mapStyle = await MapsUtil.setLightMapStyle();
+                            _mapStyle = await GoogleMapUtil.setLightMapStyle();
                           }
                           _googleMapController.setMapStyle(_mapStyle);
                           if (context.mounted) {

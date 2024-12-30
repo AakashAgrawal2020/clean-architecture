@@ -10,10 +10,10 @@ import 'package:clean_architecture/core/helpers/strings.dart';
 import 'package:clean_architecture/core/helpers/textstyles.dart';
 import 'package:clean_architecture/core/services/theme/theme_manager.dart';
 import 'package:clean_architecture/core/utils/animations_util.dart';
-import 'package:clean_architecture/core/utils/enums.dart';
+import 'package:clean_architecture/core/network/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
-import 'package:clean_architecture/core/utils/maps_util.dart';
+import 'package:clean_architecture/core/utils/google_map_util.dart';
 import 'package:clean_architecture/core/utils/permissions_util.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/products/bloc/products_bloc.dart';
@@ -174,7 +174,7 @@ class _ProductListingScreenState extends State<ProductListingScreen>
                                       ? Dimens.dm40
                                       : Dimens.dm0),
                               child: ProductCard(
-                                  distance: currentLocation!=null?MapsUtil.distanceInKms(
+                                  distance: currentLocation!=null?GoogleMapUtil.distanceInKms(
                                       currentLocation!.latitude,
                                       currentLocation!.longitude,
                                       state.products[index].coordinates[0],

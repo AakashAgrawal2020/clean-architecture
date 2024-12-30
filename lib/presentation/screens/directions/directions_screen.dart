@@ -3,9 +3,9 @@ import 'package:clean_architecture/core/config/theme/dark_theme_config.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/textstyles.dart';
-import 'package:clean_architecture/core/utils/enums.dart';
+import 'package:clean_architecture/core/network/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
-import 'package:clean_architecture/core/utils/maps_util.dart';
+import 'package:clean_architecture/core/utils/google_map_util.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/main.dart';
 import 'package:clean_architecture/presentation/screens/directions/bloc/directions_bloc.dart';
@@ -85,7 +85,7 @@ class _DirectionsScreenState extends State<DirectionsScreen>
             },
             listener: (BuildContext context, DirectionsState state) {
               if (_googleMapController != null && state.markers.isNotEmpty) {
-                MapsUtil.fitMarkersInView(
+                GoogleMapUtil.fitMarkersInView(
                   markers: state.markers,
                   googleMapController: _googleMapController!,
                 );
@@ -115,14 +115,14 @@ class _DirectionsScreenState extends State<DirectionsScreen>
                         _googleMapController = controller;
                         if (context.read<ThemeBloc>().state.themeData ==
                             darkTheme) {
-                          _mapStyle = await MapsUtil.setDarkMapStyle();
+                          _mapStyle = await GoogleMapUtil.setDarkMapStyle();
                         } else {
-                          _mapStyle = await MapsUtil.setLightMapStyle();
+                          _mapStyle = await GoogleMapUtil.setLightMapStyle();
                         }
                         _googleMapController?.setMapStyle(_mapStyle);
 
                         if (state.markers.isNotEmpty) {
-                          MapsUtil.fitMarkersInView(
+                          GoogleMapUtil.fitMarkersInView(
                               markers: state.markers,
                               googleMapController: _googleMapController!);
                         }

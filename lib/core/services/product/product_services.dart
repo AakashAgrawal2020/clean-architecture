@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/pngs.dart';
-import 'package:clean_architecture/core/utils/maps_util.dart';
+import 'package:clean_architecture/core/utils/google_map_util.dart';
 import 'package:clean_architecture/data/model/product/product_model.dart';
 import 'package:clean_architecture/presentation/routes/routes.dart';
 import 'package:clean_architecture/presentation/screens/products/bloc/products_bloc.dart';
@@ -38,7 +38,7 @@ class ProductServices {
               LatLng(products[i].coordinates[0], products[i].coordinates[1]),
           icon: customIcon,
           onTap: () {
-            MapsUtil.animateCameraOnMarkerTap(products[i], googleMapController)
+            GoogleMapUtil.animateCameraOnMarkerTap(products[i], googleMapController)
                 .whenComplete(() {
               if (selectedProduct == products[i]) {
                 animationController.reverse().then((_) {

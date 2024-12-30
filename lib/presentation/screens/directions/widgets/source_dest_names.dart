@@ -2,7 +2,7 @@ import 'package:clean_architecture/core/components/circular_loader.dart';
 import 'package:clean_architecture/core/helpers/colours.dart';
 import 'package:clean_architecture/core/helpers/dimens.dart';
 import 'package:clean_architecture/core/helpers/strings.dart';
-import 'package:clean_architecture/core/utils/enums.dart';
+import 'package:clean_architecture/core/network/enums.dart';
 import 'package:clean_architecture/core/utils/extensions/general_extensions.dart';
 import 'package:clean_architecture/core/utils/extensions/style_extensions.dart';
 import 'package:clean_architecture/presentation/screens/directions/bloc/directions_bloc.dart';

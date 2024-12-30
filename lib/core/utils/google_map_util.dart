@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapsUtil {
+class GoogleMapUtil {
   static const String lightTheme = 'assets/map_modes/light_mode.json';
   static const String darkTheme = 'assets/map_modes/dark_mode.json';
 
